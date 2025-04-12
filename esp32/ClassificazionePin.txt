@@ -1,0 +1,103 @@
+### Tabella dei Pin dell'ESP32 per Funzionalità
+
+---
+
+#### **Pin GPIO (Generale Input/Output)**
+Quasi tutti i pin GPIO dell'ESP32 possono essere utilizzati come **input** o **output**. Tuttavia, alcuni di essi hanno **funzioni speciali** 
+che possono influenzare l'utilizzo. Ecco i pin che possono essere utilizzati come **GPIO**:
+
+- **GPIO0, GPIO2, GPIO4, GPIO5, GPIO12, GPIO13, GPIO14, GPIO15, GPIO16, GPIO17, GPIO18, GPIO19, GPIO21, GPIO22, GPIO23, GPIO25, GPIO26, GPIO27, GPIO32, GPIO33**
+
+---
+
+#### **Pin Solo Input (Non Usabili come Output o PWM)**
+Alcuni pin sono progettati per essere usati **solo come input analogici** e **non possono essere utilizzati per segnali PWM o come uscite digitali**:
+
+- **GPIO34, GPIO35, GPIO36, GPIO39**  
+  Questi pin sono **solo input analogici** e **non supportano funzioni di uscita** come PWM o segnali digitali.
+
+---
+
+#### **Pin PWM (Pulse Width Modulation)**
+La maggior parte dei pin GPIO dell'ESP32 può essere utilizzata per generare segnali PWM. Tuttavia, ci sono alcuni **pin speciali** che non sono consigliati 
+per il PWM o sono riservati a funzioni particolari.
+
+- **Pin Usabili per PWM**:  
+  - **GPIO0, GPIO2, GPIO4, GPIO5, GPIO12, GPIO13, GPIO14, GPIO15, GPIO16, GPIO17, GPIO18, GPIO19, GPIO21, GPIO22, GPIO23, GPIO25, GPIO26, GPIO27, GPIO32, GPIO33**
+  
+- **Pin Non Usabili per PWM**:  
+  - **GPIO34, GPIO35, GPIO36, GPIO39** (solo input, non supportano il PWM)
+
+---
+
+#### **Pin ADC (Analog-to-Digital Converter)**
+Questi pin sono utilizzati per misurare segnali analogici, con una risoluzione a 12 bit. L'ESP32 ha un totale di **18 canali ADC** (ad esempio, ADC1 e ADC2).
+
+- **Pin ADC1 (Canali di Input Analogico)**:
+  - **GPIO34, GPIO35, GPIO36, GPIO37, GPIO38, GPIO39**  
+  - Può essere utilizzato per **lettura di segnali analogici**.
+
+- **Pin ADC2 (Canali di Input Analogico)**:
+  - **GPIO0, GPIO2, GPIO4, GPIO12, GPIO13, GPIO14, GPIO15, GPIO25, GPIO26, GPIO27, GPIO32, GPIO33**
+
+---
+
+#### **Pin DAC (Digital-to-Analog Converter)**
+I pin DAC consentono di emettere un segnale analogico a partire da un valore digitale. L'ESP32 ha due pin DAC:
+
+- **GPIO25** – **DAC1** (8-bit)
+- **GPIO26** – **DAC2** (8-bit)
+
+---
+
+#### **Pin I2C (Inter-Integrated Circuit)**
+I pin I2C sono usati per la comunicazione seriale con dispositivi esterni come sensori e moduli. Questi sono i pin utilizzabili per I2C:
+
+- **SCL (Clock)**:  
+  - **GPIO22**
+  
+- **SDA (Data)**:  
+  - **GPIO21**
+
+---
+
+#### **Pin SPI (Serial Peripheral Interface)**
+L'ESP32 supporta **4 linee SPI** (MISO, MOSI, SCK, CS). I pin SPI vengono utilizzati per la comunicazione ad alta velocità con dispositivi come memorie Flash, display, sensori, ecc.
+
+- **MOSI (Master Out Slave In)**:  
+  - **GPIO23**
+  
+- **MISO (Master In Slave Out)**:  
+  - **GPIO19**
+  
+- **SCK (Clock)**:  
+  - **GPIO18**
+  
+- **CS (Chip Select)**:  
+  - **GPIO5**
+
+---
+
+#### **Pin UART (Universal Asynchronous Receiver-Transmitter)**
+I pin UART sono utilizzati per la comunicazione seriale, ad esempio per interfacciarsi con moduli Wi-Fi, Bluetooth o altri dispositivi seriali.
+
+- **UART0**:
+  - **TX**: **GPIO1**
+  - **RX**: **GPIO3**
+  
+- **UART1**:
+  - **TX**: **GPIO17**
+  - **RX**: **GPIO16**
+  
+- **UART2**:
+  - **TX**: **GPIO17**
+  - **RX**: **GPIO16**
+  
+---
+
+#### **Pin di Alimentazione e Massa**
+- **3V3** – Uscita 3.3V
+- **5V** – Uscita 5V (se alimentato via USB)
+- **GND** – Massa (Ground)
+
+---
