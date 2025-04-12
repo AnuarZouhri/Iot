@@ -7,7 +7,7 @@ Quasi tutti i pin GPIO dell'ESP32 possono essere utilizzati come **input** o **o
 che possono influenzare l'utilizzo. Ecco i pin che possono essere utilizzati come **GPIO**:
 
 - **GPIO0, GPIO2, GPIO4, GPIO5, GPIO12, GPIO13, GPIO14, GPIO15, GPIO16, GPIO17, GPIO18, GPIO19, GPIO21, GPIO22, GPIO23, GPIO25, GPIO26, GPIO27, GPIO32, GPIO33**
-
+   Nota però che i pin 16 e 17 dovrebbero essere riservati per l'accesso alla PSRAM, quindi è meglio non usarli.
 ---
 
 #### **Pin Solo Input (Non Usabili come Output o PWM)**

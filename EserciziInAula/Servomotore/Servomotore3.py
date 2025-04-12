@@ -1,7 +1,7 @@
 from machine import Pin, PWM, ADC
 import time
 
-pwm2 = PWM(Pin(27), freq=50)
+pwm2 = PWM(Pin(27), freq=50) 
 
 class BUZZER:
     def __init__(self, sig_pin):
