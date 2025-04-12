@@ -57,7 +57,7 @@ led = LED(14)
 led.ledOff()
 
 while True:
-    value = ldr.read()
+    value = ldr.value()
     if value > 60:
         led.ledOn()
         set_angle(180)
