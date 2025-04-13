@@ -79,9 +79,11 @@ while True:
     if newValue > 60:
         led.ledOff()
         set_angle(180)
+        time.sleep(1)
     else
         led.ledOn()
         set_angle(0)
+        time.sleep(1)
     oldValue=newValue
         
     
