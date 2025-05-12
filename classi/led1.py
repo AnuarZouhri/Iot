@@ -1,7 +1,7 @@
 from machine import Pin
 
 """ Classe per l'oggetto Led """
-class LED:
+class Led:
     
     """ Costruttore """
     def __init__(self, pin):
