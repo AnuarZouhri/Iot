@@ -47,7 +47,7 @@ class HCSR04:
     '''Restituisce la distanza in mm dall'oggetto che ha avanti
     def distanceMm(self):
         pulseTime = self.pulseAndWait()
-        mm = pulse_time * 100 // 582
+        mm = pulseTime * 100 // 582
         return mm
     '''
     
@@ -79,7 +79,7 @@ class HCSR04:
 su=HCSR04(5,18)
 
 while True:
-    print(su.distance_cm())
+    print(su.distanceCm())
     sleep(2)
     
 '''
