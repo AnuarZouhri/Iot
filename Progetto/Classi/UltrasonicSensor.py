@@ -1,71 +1,78 @@
-import machine, time
+import machine
 from machine import Pin
-from time import sleep
+from time import sleep_ms
+
+'''
+come funziona il sensore? il trigger emette ciclicamente
+onde sonore, i quali si propagano nell'aria alla velocità
+del suono. Quando vi è un oggetto avanti tale impulso viene riflesso
+e rilevato da eco.
+La distanza si calcola in base al tempo tra la trasmissione
+dell'impulso e la ricezione del segnale d'eco.
+distanza=(velocitàPropagazioneOndaSonora*tempoTraTrasmissioneERicezione)/2
+
+'''
 
 class HCSR04:
-    """
-    Driver to use the untrasonic sensor HC-SR04.
-    The sensor range is between 2cm and 4m.
-    The timeouts received listening to echo pin are converted to OSError('Out of range')
-    """
-    # echo_timeout_us is based in chip range limit (400cm)
-    def __init__(self, trigger_pin, echo_pin, echo_timeout_us=500*2*30):
-        """
-        trigger_pin: Output pin to send pulses
-        echo_pin: Readonly pin to measure the distance. The pin should be protected with 1k resistor
-        echo_timeout_us: Timeout in microseconds to listen to echo pin. 
-        By default is based in sensor limit range (4m)
-        """
-        self.echo_timeout_us = echo_timeout_us
-        self.trigger = Pin(trigger_pin, mode=Pin.OUT, pull=None)
-        self.trigger.value(0)
-        self.echo = Pin(echo_pin, mode=Pin.IN, pull=None)
+    '''
+    Prende il pin di trigger, eco e il timeout indica il tempo massimo atteso entro cui si può rilevare un eco
+    '''
+    def __init__(self, trigger, echo, timeout=500*2*30):
+        self.trigger = Pin(trigger, Pin.OUT)
+        self.echo = Pin(echo, Pin.IN)
+        self.timeout = timeout
+        self.newDistance=0
+        self.oldDistance=0
         
     
-    
-    def _send_pulse_and_wait(self):
-        """
-        Send the pulse to trigger and listen on echo pin.
-        We use the method `machine.time_pulse_us()` to get the microseconds until the echo is received.
-        """
-        self.trigger.value(0) # Stabilize the sensor
-        time.sleep_us(5)
+    '''
+    Il trigger invia un'onda sonora e nel caso echo rileva un riflesso
+    conta per quanti ms resta a 1. Se echo 
+    '''
+    def pulseAndWait(self):
+        self.trigger.value(0)
+        sleep_ms(5)
         self.trigger.value(1)
-        # Send a 10us pulse.
-        time.sleep_us(10)
+        sleep_ms(10)
         self.trigger.value(0)
         try:
-            pulse_time = machine.time_pulse_us(self.echo, 1, self.echo_timeout_us)
+            pulse_time = machine.time_pulse_us(self.echo, 1, self.timeout) ''' mi dice quanto tempo echo resta a 1'''
             return pulse_time
-        except OSError as ex:
-            if ex.args[0] == 110: # 110 = ETIMEDOUT
+        except OSError as ex: #nel caso echo non va a 1 in timeout ms
+            if ex.args[0] == 110:
                 raise OSError('Out of range')
             raise ex
 
 
-    '''Restituisce la distanza in mm dall'oggetto che ha avanti'''
-    def distance_mm(self):
-        pulse_time = self._send_pulse_and_wait()
-
-        # To calculate the distance we get the pulse_time and divide it by 2 
-        # (the pulse walk the distance twice) and by 29.1 becasue
-        # the sound speed on air (343.2 m/s), that It's equivalent to
-        # 0.34320 mm/us that is 1mm each 2.91us
-        # pulse_time // 2 // 2.91 -> pulse_time // 5.82 -> pulse_time * 100 // 582 
+    '''Restituisce la distanza in mm dall'oggetto che ha avanti
+    def distanceMm(self):
+        pulseTime = self.pulseAndWait()
         mm = pulse_time * 100 // 582
         return mm
-    
+    '''
     
     '''Restituisce la distanza in cm dall'oggetto che ha avanti'''
-    def distance_cm(self):
-        pulse_time = self._send_pulse_and_wait()
-
-        # To calculate the distance we get the pulse_time and divide it by 2 
-        # (the pulse walk the distance twice) and by 29.1 becasue
-        # the sound speed on air (343.2 m/s), that It's equivalent to
-        # 0.034320 cm/us that is 1cm each 29.1us
-        cms = (pulse_time / 2) / 29.1
+    def distanceCm(self):
+        pulseTime = self.pulseAndWait()
+        cms = (pulseTime / 2) / 29.1
         return cms
+    
+    '''Setta la distanza attuale'''
+    def calculateDistance(self):
+        self.oldDistance=self.distanceCm()
+    
+    '''Verifica se l'oggetto è stato spostato ovvero la distanza è aumentata'''
+    def distanceChange(self):
+        self.newDistance=self.distanceCm()
+        if self.newDistance > self.oldDistance:
+            return True
+        else
+            return False
+            
+    
+    
+    
+    
     
     
 '''
