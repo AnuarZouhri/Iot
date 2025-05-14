@@ -1,70 +1,90 @@
-from KeyPad import KeyPad
 import os
-import time
+
+""" Stati principali """
+STATO_CONFIGURAZIONE_SISTEMA = 0
+STATO_CONNESSIONE = 1
+STATO_VISTA_MENU = 2
+STATO_CAMBIO_CONFIGURAZIONE = 3
+STATO_INSERIMENTO_PIN = 4
+STATO_SBLOCCATO = 5
+STATO_BLOCCATO = 6
+STATO_RICONNESSIONE = 7
+
+""" Stato allarme """
+STATO_ALLARME = 8
 
 
-def login():
-    if not 'password.txt' in os.listdir():
-        print('Account non registrato! operazione non ammessa.')
-        return
-    
-    print('Inserire i caratteri: ')
-    password = ''
-    
-    for i in range(4):
-        
-        key = pad.scan()
-        while pad.scan() == key:
-            time.sleep_ms(20)
-        
-        password += key
-    
-    password_letta
-    with open('password.txt', 'r') as f:
-        password_letta = f.read()
-    
-    if password == password_letta:
-        print('Login avvenuto con successo!')
-    else:
-        print('Password errata..')
-        
-        
-        
-        
-def modify():
-    print('Inserire i caratteri: ')
-    
-    password = ''
-    
-    for i in range(4):
-        
-        key = pad.scan()
-        while pad.scan() == key:
-            time.sleep_ms(20)
-        
-        password += key
+""" File per il salvataggio dei dati di configurazione """
+file_password_wifi = "password.txt"
+file_nome_wifi = "wifi.txt"
+file_pin = "pin.txt"
 
-    with open('password.txt', 'w') as f:
-        f.write(password)
-    
-    print('Salvataggio avvenuto con successo!')
 
-pad = KeyPad(2,4,5,18,19,21,22,23)
+""" Definizione stato corrente """
+stato = ""
+
+
+""" Inizializzazione dello stato """
+if not file_pin in os.listdir():
+    stato = STATO_CONFIGURAZIONE_SISTEMA
+else:
+    stato = STATO_CONNESSIONE
+    
 
 while True:
-    print('Premere (1) per loggare.')
-    print('Premere (2) per inserire/modificare la password.')
     
-    key = pad.scan()
-    while pad.scan() == key:
-        time.sleep_ms(20)
+    #
+    # CONTROLLO DELLO STATO DI RICONNESSIONE
+    #
+    #
     
-    if key == '1':
-        login()
-    if key == '2':
-        modify()
-    if key != '1' and key != '2':
-        print('Valore non ammesso!')
-        
+    if stato == STATO_CONFIGURAZIONE_SISTEMA:
+        #
+        # Istruzioni
+        #
+        # stato = NUOVO_STATO
+    elif stato == STATO_CONNESSIONE:
+        #
+        # Istruzioni
+        #
+        # stato = NUOVO_STATO
+    elif stato == STATO_VISTA_MENU:
+        #
+        # Istruzioni
+        #
+        # stato = NUOVO_STATO
+    elif stato == STATO_CAMBIO_CONFIGURAZIONE:
+        #
+        # Istruzioni
+        #
+        # stato = NUOVO_STATO
+    elif stato == STATO_INSERIMENTO_PIN:
+        #
+        # Istruzioni
+        #
+        # stato = NUOVO_STATO
+    elif stato == STATO_SBLOCCATO:
+        #
+        # Istruzioni
+        #
+        # stato = NUOVO_STATO
+    elif stato == STATO_BLOCCATO:
+        #
+        # Istruzioni
+        #
+        # stato = NUOVO_STATO
+    elif stato == STATO_RICONNESSIONE:
+        #
+        # Istruzioni
+        #
+        # stato = NUOVO_STATO
+    elif stato == STATO_ALLARME:
+        #
+        # Istruzioni
+        #
+        # stato = NUOVO_STATO
     
-        
+
+
+    
+    

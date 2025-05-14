@@ -96,19 +96,21 @@ def modify():
 pad = KeyPad(2,4,5,18,19,21,22,23)
 
 while True:
-    print('Premere (1) per loggare.')
-    print('Premere (2) per inserire/modificare la password.')
+    #print('Premere (1) per loggare.')
+    #print('Premere (2) per inserire/modificare la password.')
     
     key = pad.lettura()
-    while key == None:
-        key = pad.lettura()
+    #if key is not None:
+    #    pass
+    #while key == None:
+    #    key = pad.lettura()
     
     if key == '1':
         login()
-    if key == '2':
-        modify()
-    if key != '1' and key != '2':
-        print('Valore non ammesso!')
+    #if key == '2':
+    #    modify()
+    #if key != '1' and key != '2':
+    #    print('Valore non ammesso!')
         
     
         
