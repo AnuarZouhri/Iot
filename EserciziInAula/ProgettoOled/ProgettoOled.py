@@ -70,6 +70,7 @@ oldValue=ldr.value()
 display.text("Value: ".format(oldValue), 11, 56)
 display.show()
 time.sleep_ms(1000)
+
 while True:
     newValue = ldr.value()
     if newValue != oldValue:
