@@ -74,12 +74,18 @@ class HCSR04:
     
     
     
-    
-'''
 su=HCSR04(5,18)
 
 while True:
     print(su.distanceCm())
-    sleep(2)
+    sleep(3)
     
-'''
+    
+    
+    
+    
+    
+    
+    
+    
+    

@@ -54,4 +54,6 @@ print(" Connected!")'''
 
 
 while True:
+    if not connection:
+        connection()
     print('connect')

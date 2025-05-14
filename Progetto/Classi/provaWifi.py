@@ -9,20 +9,16 @@ class WiFi:
         self.password=password
         
     def connectionWifi(self):
-        print("Connecting to WiFi")
+        print("Connecting to WiFi", end="")
+        
         self.sta_if.active(True)
         self.sta_if.connect(self.hotspot, self.password)
         print(" Connected!")
-        
-    def isconnected(self):
-        return self.sta_if.isconnected()
         
     
         
         
         
         
-
-
 
 
