@@ -9,11 +9,11 @@ class ServoMotor():
         self.duty_max = 133
         self.pwm.duty(int(duty_min + (angle/180)*(duty_max-duty_min)))
         
-    def openDoor(self):
-        self.set_angle(0)
+    def openDoor(self, angle=0):
+        self.set_angle(angle)
         
-    def closeDoor(self):
-        self.set_angle(180)
+    def closeDoor(self, angle=180):
+        self.set_angle(angle)
         
 '''
 sv=ServoMotor(23)
