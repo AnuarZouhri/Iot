@@ -12,7 +12,7 @@ class AnalogicJoystick:
         
     '''
     Restituisce un valore da 0 a 3.3.
-    Restituisce 2.23-2.25 se il joystick è al centro
+    Restituisce 2.20-2.30 se il joystick è al centro
     '''
     def readY(self):
         val=self.y.read()
@@ -33,10 +33,5 @@ class AnalogicJoystick:
             return False
         
     
-    
-aj=AnalogicJoystick(26,4,5)
 
-while True:
-    print(aj.readY())
-        
     

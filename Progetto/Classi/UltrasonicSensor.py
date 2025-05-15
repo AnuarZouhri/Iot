@@ -36,7 +36,7 @@ class HCSR04:
         sleep_ms(10)
         self.trigger.value(0)
         try:
-            pulse_time = machine.time_pulse_us(self.echo, 1, self.timeout) ''' mi dice quanto tempo echo resta a 1'''
+            pulse_time = machine.time_pulse_us(self.echo, 1, self.timeout) # mi dice quanto tempo echo resta a 1
             return pulse_time
         except OSError as ex: #nel caso echo non va a 1 in timeout ms
             if ex.args[0] == 110:
@@ -66,19 +66,11 @@ class HCSR04:
         self.newDistance=self.distanceCm()
         if self.newDistance > self.oldDistance:
             return True
-        else
+        else:
             return False
             
     
     
-    
-    
-    
-su=HCSR04(5,18)
-
-while True:
-    print(su.distanceCm())
-    sleep(3)
     
     
     
