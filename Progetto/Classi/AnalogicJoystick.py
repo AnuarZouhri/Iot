@@ -32,6 +32,6 @@ class AnalogicJoystick:
         elif self.SW.value()==1:
             return False
         
-    
-
-    
+'''
+aj=AnalogicJoystick(26,4,14)
+''' 

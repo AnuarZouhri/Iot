@@ -1,5 +1,6 @@
 import os
 from KeyPad import KeyPad
+from OledClass import Oled
 
 """ Stati principali """
 STATO_CONFIGURAZIONE_PIN = 0
@@ -23,7 +24,8 @@ file_pin = "pin.txt"
 
 
 """ Definizione di sensori e attuatori """
-pad = KeyPad(2,4,5,18,19,21,22,23)  # Tastierino numerico
+pad = KeyPad(2,4,5,18,19,14,12,23)  # Tastierino numerico
+oled = Oled()   # Oled
 
 
 """ Definizione stato corrente """
@@ -41,6 +43,9 @@ while True:
     
     if stato == STATO_CONFIGURAZIONE_PIN:
         print('Inserire pin!!')
+        pos = oled.write(1,1,0,'Inserire il pin!\n')
+        oled.show()
+        print(pos)
         password = ''
     
         for i in range(4):
@@ -48,51 +53,71 @@ while True:
             while key == None:
                 key = pad.lettura()
             password = password + key
+            pos = oled.write(pos[0],pos[1],0,'*',clean=False)
+            oled.show()
 
         with open('pin.txt', 'w') as f:
             f.write(password)
         
+        oled.write(1,1,0,'Pin inserito!',clean=True)
+        oled.show()
         #
         # AGGIORNAMENTO DELLO STATO
         #
         stato = STATO_CONFIGURAZIONE_WIFI
         
+        
+        
+        
     elif stato == STATO_CONFIGURAZIONE_WIFI:
+        pass
         #
         # Istruzioni
         #
         # stato = NUOVO_STATO
-    elif stato = STATO_CONNESSIONE:
+        
+        
+        
+        
+        
+    elif stato == STATO_CONNESSIONE:
+        pass
         #
         # Istruzioni
         #
         # stato = NUOVO_STATO
     elif stato == STATO_VISTA_MENU:
+        pass
         #
         # Istruzioni
         #
         # stato = NUOVO_STATO
     elif stato == STATO_CAMBIO_CONFIGURAZIONE:
+        pass
         #
         # Istruzioni
         #
         # stato = NUOVO_STATO
     elif stato == STATO_INSERIMENTO_PIN:
+        pass
         #
         # Istruzioni
         #
         # stato = NUOVO_STATO
     elif stato == STATO_SBLOCCATO:
+        pass
         #
         # Istruzioni
         #
         # stato = NUOVO_STATO
     elif stato == STATO_BLOCCATO:
+        pass
         #
         # Istruzioni
         #
         # stato = NUOVO_STATO
     elif stato == STATO_ALLARME:
+        pass
         #
         # Istruzioni
         #

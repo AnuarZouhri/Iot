@@ -20,7 +20,7 @@ class KeyPad:
         self.colPins = [Pin(p, Pin.OUT) for p in [out1, out2, out3, out4]]
         
         
-    """ Lettura del tasto premuto """
+    """ Scan del tasto premuto """
     def scan(self):
         for colNum, col in enumerate(self.colPins):
             """ Tutte le colonne a 1 tranne una (col) """
@@ -35,3 +35,13 @@ class KeyPad:
                     if row.value() == 0:  # verifica di nuovo
                         return self.KEY_MAP[rowNum][colNum]
         return None
+
+    """ Lettura attiva del tasto premuto """
+    def lettura(self):
+        key = self.scan()
+        if key:
+            print('Hai premuto: ', key, ' di tipo: ', type(key))
+            while pad.scan() == key:
+                time.sleep_ms(20)
+            time.sleep_ms(50)
+        return key
