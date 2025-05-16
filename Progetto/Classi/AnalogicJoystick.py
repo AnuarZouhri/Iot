@@ -34,7 +34,7 @@ class AnalogicJoystick:
         
     
     
-aj=AnalogicJoystick(26,4,5)
+aj=AnalogicJoystick(26,4,14)
 
 while True:
     print(aj.readY())
