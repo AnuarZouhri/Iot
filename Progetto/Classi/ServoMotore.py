@@ -7,7 +7,7 @@ class ServoMotor():
     def set_angle(self,angle):
         self.duty_min = 35
         self.duty_max = 133
-        self.pwm.duty(int(duty_min + (angle/180)*(duty_max-duty_min)))
+        self.pwm.duty(int(self.duty_min + (angle/180)*(self.duty_max-self.duty_min)))
         
     def openDoor(self, angle=0):
         self.set_angle(angle)
