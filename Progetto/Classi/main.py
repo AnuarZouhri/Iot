@@ -1,6 +1,8 @@
 import os
+from time import sleep, localtime
 from KeyPad import KeyPad
 from OledClass import Oled
+from WiFiClass import WiFi
 
 """ Stati principali """
 STATO_CONFIGURAZIONE_PIN = 0
@@ -17,8 +19,8 @@ STATO_ALLARME = 8
 
 
 """ File per il salvataggio dei dati di configurazione """
-file_password_wifi = "password.txt"
-file_nome_wifi = "wifi.txt"
+#file_password_wifi = "password.txt"
+#file_nome_wifi = "wifi.txt"
 file_pin = "pin.txt"
 
 
@@ -26,6 +28,7 @@ file_pin = "pin.txt"
 """ Definizione di sensori e attuatori """
 pad = KeyPad(2,4,5,18,19,14,12,23)  # Tastierino numerico
 oled = Oled()   # Oled
+wifi = WiFi('Galaxy A5173BB', 'aaaaaaab')
 
 
 """ Definizione stato corrente """
@@ -36,7 +39,7 @@ stato = ""
 if not file_pin in os.listdir():
     stato = STATO_CONFIGURAZIONE_PIN
 else:
-    stato = STATO_CONNESSIONE
+    stato = STATO_CONFIGURAZIONE_WIFI
     
 
 while True:
@@ -53,7 +56,7 @@ while True:
             while key == None:
                 key = pad.lettura()
             password = password + key
-            pos = oled.write(pos[0],pos[1],0,'*',clean=False)
+            pos = oled.write(pos[0],pos[1],0,' * ',clean=False)
             oled.show()
 
         with open('pin.txt', 'w') as f:
@@ -61,6 +64,7 @@ while True:
         
         oled.write(1,1,0,'Pin inserito!',clean=True)
         oled.show()
+        
         #
         # AGGIORNAMENTO DELLO STATO
         #
@@ -70,24 +74,54 @@ while True:
         
         
     elif stato == STATO_CONFIGURAZIONE_WIFI:
-        pass
-        #
-        # Istruzioni
-        #
-        # stato = NUOVO_STATO
+        oled.write(1,1,0,'Benvenut*!')
+        oled.show()
+        sleep(2)
         
+        pos = oled.write(1, 1, 0, 'Connessione al\n')
+        pos = oled.write(pos[0], pos[1], 0, 'wifi in corso...', clean=False)
+        oled.show()
+        
+        wifi.connectionWiFi()
+        
+        if wifi.isconnected():
+            pos = oled.write(1, 1, 0, 'Connessione\nriuscita! :)')
+            oled.show()
+        else:
+            pos = oled.write(1, 1, 0, 'Connessione\nnon riuscita.. :(')
+            oled.show()
+        
+        sleep(2)
+        
+        #
+        # AGGIORNAMENTO DELLO STATO
+        #
+        stato = STATO_CONNESSIONE
         
         
         
         
     elif stato == STATO_CONNESSIONE:
-        pass
+        print('Simula connessione mqtt..')
+        pos = oled.write(1, 1, 0, 'Simula\nconnessione mqtt...')
+        oled.show()
+        sleep(4)
+        oled.write(1,1,0,'')
+        oled.show()
+        
         #
-        # Istruzioni
+        # AGGIORNAMENTO DELLO STATO
         #
-        # stato = NUOVO_STATO
+        stato = STATO_VISTA_MENU
+        
+        
+        
     elif stato == STATO_VISTA_MENU:
-        pass
+        timestamp = localtime()
+        stringa = '25 C|40%|'+str(timestamp[3])+':'+str(timestamp[4])+'\n'
+        pos = oled.write(1, 1, 0, stringa)
+        oled.show()
+        sleep(5)
         #
         # Istruzioni
         #
@@ -123,10 +157,15 @@ while True:
         #
         # stato = NUOVO_STATO
     
-    #
-    # Verifica lo stato di connessione
-    #
-    #
+    
+    
+    if wifi.isconnected():
+        print('Ancora connesso!')
+    else:
+        print('Disconnesso...')
+        wifi.connectionWiFi()
+    
+    sleep(1)
 
 
     
