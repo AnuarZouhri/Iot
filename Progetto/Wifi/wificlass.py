@@ -21,8 +21,9 @@ class WiFi:
             
             self.sta_if.connect(self.hotspot, self.password)
             
-            while not self.sta_if.isconnected():
-                pass
+            if not self.sta_if.isconnected():
+                sleep(1.5)
+                
         
         except OSError as e:
             self.disconnectWiFi()
