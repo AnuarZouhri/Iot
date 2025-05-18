@@ -41,7 +41,7 @@ class KeyPad:
         key = self.scan()
         if key:
             print('Hai premuto: ', key, ' di tipo: ', type(key))
-            while pad.scan() == key:
+            while self.scan() == key:
                 time.sleep_ms(20)
             time.sleep_ms(50)
         return key

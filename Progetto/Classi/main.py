@@ -2,7 +2,7 @@ import os
 from time import sleep, localtime
 from KeyPad import KeyPad
 from OledClass import Oled
-from WiFiClass import WiFi
+from wificlass import WiFi
 
 """ Stati principali """
 STATO_CONFIGURAZIONE_PIN = 0

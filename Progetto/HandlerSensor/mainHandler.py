@@ -1,18 +1,18 @@
 from dht22 import DHT22
-from AnalogicJoystick import AnalogicJoystick
+#from AnalogicJoystick import AnalogicJoystick
 from UltrasonicSensor import HCSR04
 from Handler import SensorHandler
 from time import sleep
-from wificlass import WiFi
-from ServoMotore import ServoMotor
+from WiFiClass import WiFi
+#from ServoMotore import ServoMotor
 
-dht22 = DHT22(15)
-hcsr04 = HCSR04(5,18)
-analogicJ = AnalogicJoystick(26,35,14)
-servoM=ServoMotor(4)
+dht22 = DHT22(36)
+hcsr04 = HCSR04(32,34)
+#analogicJ = AnalogicJoystick(26,35,14)
+#servoM=ServoMotor(4)
 
 wf=WiFi('Galaxy A5173BB', 'aaaaaaab')
-handler = SensorHandler(dht22,hcsr04,analogicJ)
+handler = SensorHandler(dht22,hcsr04)
 
 was_connected = 0
 
@@ -28,7 +28,8 @@ while True:
         print('non connesso')'''
     d = handler.read()
     print(d)
-    if d['Y-axis values']>3:
+    sleep(0.3)
+    '''if d['Y-axis values']>3:
         print('chiudi')
     sleep(1)
     v=0
@@ -43,7 +44,7 @@ while True:
         print('v',v)
         servoM.openDoor(v)
         d = handler.read()
-        sleep(0.3)
+        sleep(0.3)'''
     
     
     
