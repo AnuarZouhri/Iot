@@ -9,6 +9,8 @@ class AnalogicJoystick:
         self.y=ADC(Pin(pinY, Pin.IN))
         self.y.atten(ADC.ATTN_11DB) 
         self.SW=Pin(pinSW, Pin.IN, Pin.PULL_UP)
+        self.last_press_time=0
+        self.current_time=0
         
     '''
     Restituisce un valore da 0 a 3.3.
@@ -27,10 +29,16 @@ class AnalogicJoystick:
     '''
     
     def pressed(self):
+        self.current_time = time.ticks_ms()
+        if time.ticks_diff(self.current_time, self.last_press_time) < 200:
+            return
+        self.last_press_time = self.current_time
+        
         if self.SW.value()==0:
             return True
         elif self.SW.value()==1:
             return False
+
         
 '''
 aj=AnalogicJoystick(26,4,14)
