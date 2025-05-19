@@ -1,34 +1,78 @@
 from umqtt.simple import MQTTClient
+from MessageMaker import MM
 
-def sub_callback_handler(topic,msg):
+class MQTT:
     
-        if topic == MQTT_TOPIC_SUB1:
-            data = ujson.loads(msg)
-            
-        if topic == MQTT_TOPIC_SUB2:
-            if sta_if.isconnected() ==False and msg.decode() == "0":
-                print('connetto')
-                connectionWifi()   
-                connectionClient()
-
-
-class MQTT:    
-    def __init__(self,broker,client_id,topic,topic_sub,user = "", password=""):
-        self.broker = broker
-        self.user = user
-        self.password = password
-        self.topic = topic
-        self.topic_sub = topic_sub
-        self.clients = MQTTClient(client_id, broker, user, password,keepalive=60)
+    def __init__(self, sub_callback_handler):
+        """ Definizione variabili connessione MQTT """
+        self.CLIENT_ID   = 'esp32'
+        self.BROKER      = '192.168.131.51'
+        self.USER        = ''
+        self.PASSWORD    = ''
+        self.TOPIC       = b'TheBox'
+        self.TOPIC_SUB1  = b'TheBox/OpenCavueaux'
+        self.TOPIC_SUB2  = b'TheBox/CloseCaveaux'
+        self.TOPIC_SUB3  = b'TheBox/CaveauxStatus'
+        self.TOPIC_SUB4  = b'TheBox/CaveauxStatus/Temp'
+        self.TOPIC_SUB5  = b'TheBox/CaveauxStatus/Hum'
+        self.TOPIC_SUB6  = b'TheBox/Pin'
+        self.SUB_TOPICS  = [self.TOPIC_SUB1, self.TOPIC_SUB2,
+                            self.TOPIC_SUB3, self.TOPIC_SUB4,
+                            self.TOPIC_SUB5, self.TOPIC_SUB6]
         
+        """ Inizializzazione dell'oggetto client """
+        self.client = MQTTClient(self.CLIENT_ID, self.BROKER,
+                                 user=self.USER, password=self.PASSWORD,
+                                 keepalive=60)
+        self.client.set_callback(sub_callback_handler)
     
-    def connectClient(self):
-         print("Connecting to MQTT server... ", end="")
-         self.clients.connect()
-         self.clients.set_callback(sub_callback_handler)
-         self.clients.subscribe(self.topic_sub)
-         print("Connected!")
-         
-    def publishClient(self,client.publish(topic, message)):
-        self.clients.publish(topic, message)
- 
+        """ Inizializzazione oggetto MMaker """
+        self.mMaker = MM()
+    
+    """Subscribe def"""
+    def subscribes(self):
+        for topic in self.SUB_TOPICS:
+            self.client.subscribe(topic)
+
+
+    def checkAndRead_msg(self, wifi, was_connected_MQTT, values):
+        if wifi.isconnected() and self.client is not None and was_connected_MQTT:
+            try:
+                #print('primo')
+
+                self.client.check_msg()
+                message = self.mMaker.temperatureMsg(values["Temperature"])
+                if message is not None:
+                    self.publish(self.TOPIC_SUB4,message)
+                message = self.mMaker.humidityMsg(values["Humidity"])
+                if message is not None:
+                    self.publish(self.TOPIC_SUB5,message)
+                    
+                    
+            except OSError as e:
+                print("Errore OSError in check_msg:", e)
+                try:
+                    self.disconnect()
+                except:
+                    pass
+                try:
+                    self.connect()
+                    self.subscribes()
+                    return 1
+                    print("Riconnesso MQTT dopo errore")
+                except Exception as e2:
+                    print("Errore riconnessione MQTT:", e2)
+                    return 0
+        return was_connected_MQTT      
+                    
+    def getSUB_TOPICS(self):
+        return self.SUB_TOPICS
+    
+    def connect(self):
+        self.client.connect()
+    
+    def disconnect(self):
+        self.client.disconnect()
+        
+    def publish(self, TOPIC, msg):
+        self.client.publish(TOPIC, msg)
