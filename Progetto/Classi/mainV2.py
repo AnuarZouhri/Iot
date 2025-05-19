@@ -7,6 +7,7 @@ from dht22 import DHT22
 from UltrasonicSensor import HCSR04
 from Handler import SensorHandler
 from MQTTClass import MQTT
+from PasswordClass import Password
 
 """Callback handler"""
 
@@ -45,7 +46,6 @@ STATO_ALLARME = 8
 """ File per il salvataggio dei dati di configurazione """
 #file_password_wifi = "password.txt"
 #file_nome_wifi = "wifi.txt"
-file_pin = "pin.txt"
 
 
 
@@ -59,6 +59,7 @@ hcsr04 = HCSR04(32,34)
 wifi = WiFi('Galaxy A5173BB', 'aaaaaaab')
 mqtt = MQTT(sub_callback_handler)
 handler = SensorHandler(dht22,hcsr04)
+pin = Password()
 values = []
 
 
@@ -96,8 +97,7 @@ while True:
             pos = oled.write(pos[0],pos[1],0,' * ',clean=False)
             oled.show()
 
-        with open('pin.txt', 'w') as f:
-            f.write(password)
+        pin.write(password)
         
         
         oled.write(1,1,0,'Pin inserito!',clean=True)
@@ -177,16 +177,32 @@ while True:
             key = pad.lettura()
         print('Hai premuto',key)
         
-        
-        
-        if not wifi.isconnected():
-            oled.write(1, 1, 0, 'Nessuna connes\nsione WiFi')
-            oled.show()
-            stato = STATO_CONFIGURAZIONE_WIFI
-            sleep(0.5)
-
+        if key == '1':
+            
+            password = ''
+            cont = 0
+            while not pin.checkPassword(password) and cont<3:
+                pos = oled.write(1,1,0,'Inserire il pin!\n')
+                oled.show()
+                print(pos)
+            
+                for i in range(4):
+                    key = pad.lettura()
+                    while key == None:
+                        key = pad.lettura()
+                    password = password + key
+                    print('Hai premuto',key)
+                    pos = oled.write(pos[0],pos[1],0,' * ',clean=False)
+                    oled.show()
+            
+                if pin.checkPassword(password):
+                    print('Pin corretto!')
+                else:
+                print('Pin errato..')
+            
+            if cont==3:
+                print('allarme')
         sleep(1)
-        
         #
         # Istruzioni
         #
@@ -218,6 +234,12 @@ while True:
         #
         # stato = NUOVO_STATO
     
+    
+    if not wifi.isconnected():
+        oled.write(1, 1, 0, 'Nessuna connes\nsione WiFi')
+        oled.show()
+        stato = STATO_CONFIGURAZIONE_WIFI
+        sleep(0.5)
 
     
     sleep(0.3)
