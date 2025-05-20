@@ -1,4 +1,5 @@
 from machine import Pin
+from OledClass import Oled
 import time
 
 """ Classe KeyPad per il tastierino numerico """
@@ -45,3 +46,17 @@ class KeyPad:
                 time.sleep_ms(20)
             time.sleep_ms(50)
         return key
+    
+    def letturaPin(self, oled, pos, num=4):
+        password = ''
+        
+        for i in range(num):
+            key = self.lettura()
+            while key == None:
+                key = self.lettura()
+            password = password + key
+            print('Hai premuto',key)
+            pos = oled.write(pos[0],pos[1],0,' * ',clean=False)
+            oled.show()
+        
+        return password

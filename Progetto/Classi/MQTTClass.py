@@ -16,9 +16,11 @@ class MQTT:
         self.TOPIC_SUB4  = b'TheBox/CaveauxStatus/Temp'
         self.TOPIC_SUB5  = b'TheBox/CaveauxStatus/Hum'
         self.TOPIC_SUB6  = b'TheBox/Pin'
+        self.TOPIC_SUB7  = b'TheBox/Pin/Result'
         self.SUB_TOPICS  = [self.TOPIC_SUB1, self.TOPIC_SUB2,
                             self.TOPIC_SUB3, self.TOPIC_SUB4,
-                            self.TOPIC_SUB5, self.TOPIC_SUB6]
+                            self.TOPIC_SUB5, self.TOPIC_SUB6,
+                            self.TOPIC_SUB7]
         
         """ Inizializzazione dell'oggetto client """
         self.client = MQTTClient(self.CLIENT_ID, self.BROKER,

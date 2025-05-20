@@ -7,13 +7,31 @@ from UltrasonicSensor import HCSR04
 from Handler import SensorHandler
 from MQTTClass import MQTT
 from PasswordClass import Password
-from AnalogicJoystick import AnalogicJoystick
 from servoMotore import ServoMotor
+from mutex import Mutex
+from machine import Pin
+from buzzer_class import BUZZER
+from MessageMaker import MM
+
+
+def closeDoor(pin):
+    global last_press_time, stato
+    current_time = ticks_ms()
+    if ticks_diff(current_time, last_press_time) < 200:
+        return
+    last_press_time = current_time
+    
+    if stato == STATO_SBLOCCATO:
+        sv.closeDoor()
+        mutex.lock()
+        stato = STATO_VISTA_MENU
 
 """Callback handler"""
 
 def sub_callback_handler(topic,msg):
-        global stato, SUB_TOPICS
+        global stato, SUB_TOPICS, pin, mqtt
+        print(topic)
+        print(SUB_TOPICS[0])
         if topic == SUB_TOPICS[0]:
             #
             # AGGIORNAMENTO DELLO STATO
@@ -27,7 +45,18 @@ def sub_callback_handler(topic,msg):
             stato = STATO_BLOCCATO
             
         if topic == SUB_TOPICS[5]:
-            print(msg)
+            password = msg.decode('utf-8')
+            newmsg = ''
+            mm = MM()
+            
+            if pin.checkPassword(password):
+                stato = STATO_SBLOCCATO
+                newmsg = mm.correctPinMsg()
+            else:
+                newmsg = mm.wrongPinMsg()
+            
+            #mqtt.publish(SUB_TOPICS[6], newmsg)
+                
 
 
 """ Stati principali """
@@ -38,16 +67,9 @@ STATO_VISTA_MENU = 3
 STATO_CAMBIO_CONFIGURAZIONE = 4
 STATO_INSERIMENTO_PIN = 5
 STATO_SBLOCCATO = 6
-STATO_BLOCCATO = 7
 
 """ Stato allarme """
 STATO_ALLARME = 8
-
-
-""" File per il salvataggio dei dati di configurazione """
-#file_password_wifi = "password.txt"
-#file_nome_wifi = "wifi.txt"
-
 
 
 """ Definizione di sensori e attuatori """
@@ -55,9 +77,14 @@ pad = KeyPad(15,4,5,18,19,14,12,23)  # Tastierino numerico
 oled = Oled()   # Oled Pin 22 e Pin 21
 dht22 = DHT22(33)
 hcsr04 = HCSR04(32,34)
-aj=AnalogicJoystick(35, 25)
 sv=ServoMotor(26)
-sv.closeDoor()
+mutex = Mutex(16, 2, 25)
+buzzer = BUZZER(17)
+
+mutex.lock()
+button = Pin(0, Pin.IN, Pin.PULL_DOWN)
+button.irq(trigger=Pin.IRQ_RISING, handler=closeDoor)
+last_press_time = 0
 
 """Altri oggetti utili"""
 wifi = WiFi('Galaxy A5173BB', 'aaaaaaab')
@@ -87,27 +114,22 @@ while True:
     was_connected_MQTT = mqtt.checkAndRead_msg(wifi, was_connected_MQTT, values)
     
     if stato == STATO_CONFIGURAZIONE_PIN:
+        sv.openDoor(angle=90)
+        
         print('Inserire pin!!')
         pos = oled.write(1, 1, 0, 'Per registrarti,\n')
         pos = oled.write(pos[0], pos[1], 0,'inserire il pin!\n', clean=False)
         oled.show()
         print(pos)
-        password = ''
         
-        for i in range(4):
-            key = pad.lettura()
-            while key == None:
-                key = pad.lettura()
-            password = password + key
-            print('Hai premuto',key)
-            pos = oled.write(pos[0],pos[1],0,' * ',clean=False)
-            oled.show()
+        password = pad.letturaPin(oled, pos)
 
         pin.write(password)
         
         
         oled.write(1,1,0,'Pin inserito!',clean=True)
         oled.show()
+        sv.closeDoor()
         
         #
         # AGGIORNAMENTO DELLO STATO
@@ -168,7 +190,6 @@ while True:
         
     elif stato == STATO_VISTA_MENU:
         timeout = 3500  # millisecondi (es. 5 secondi)
-        print(2)
         timestamp = localtime()
         stringa = str(values['Temperature'])+'C'+'|'+str(values['Humidity'])+'%|'+str(timestamp[3])+':'+str(timestamp[4])+'\n'
         pos = oled.write(1,1,0,'1-Apri Porta\n')
@@ -180,7 +201,6 @@ while True:
         start_time = ticks_ms()
 
         while key == None and ticks_diff(ticks_ms(), start_time) < timeout:
-            print(1)
             was_connected_MQTT = mqtt.checkAndRead_msg(wifi, was_connected_MQTT, values)
             key = pad.lettura()
         print('Hai premuto',key)
@@ -193,16 +213,16 @@ while True:
             stato = STATO_INSERIMENTO_PIN
         elif key == '2':
             stato = STATO_CAMBIO_CONFIGURAZIONE
-        elif key == None:
-            stato = STATO_VISTA_MENU
-      
-        sleep(0.3)
-        
-        if not wifi.isconnected() and key==None:
+        elif not wifi.isconnected() and key==None:
             oled.write(1, 1, 0, 'Nessuna connes\nsione WiFi')
             oled.show()
             stato = STATO_CONFIGURAZIONE_WIFI
             sleep(0.5)
+        
+      
+        sleep(0.3)
+        
+        
         
    
    
@@ -229,14 +249,7 @@ while True:
         while not pin.checkPassword(password) and cont<3:
             print(pos)
             
-            for i in range(4):
-                key = pad.lettura()
-                while key == None:
-                    key = pad.lettura()
-                password = password + key
-                print('Hai premuto',key)
-                pos = oled.write(pos[0],pos[1],0,' * ',clean=False)
-                oled.show()
+            password = pad.letturaPin(oled, pos)
             
             cont = cont + 1
             if pin.checkPassword(password):
@@ -263,35 +276,25 @@ while True:
             else:
                 stato = STATO_SBLOCCATO
             
-            
-        #
-        # Istruzioni
-        #
-        # stato = NUOVO_STATO
-    elif stato == STATO_SBLOCCATO:
-        '''val=aj.goUp()
-        print('val',val)
-        while val==-1:
-            print('porta chiusa')
-            sleep(0.1)
-            val=aj.goUp()
-        '''
-        sv.openDoor()
-        sleep(1)
         
+    elif stato == STATO_SBLOCCATO:
+        mutex.unlock()
+        sv.openDoor()
         
         oled.write(1, 1, 0, 'Porta aperta!')
         oled.show()
         
         
         #
-        # Istruzioni
+        # AGGIORNAMENTO DELLO STATO
         #
-        # stato = NUOVO_STATO
+        
 
     elif stato == STATO_ALLARME:
         oled.write(1, 1, 0, 'Allarmeeee')
         oled.show()
+        mutex.alarm()
+        buzzer.play([330], 1000, 512)
         #
         # Istruzioni
         #
