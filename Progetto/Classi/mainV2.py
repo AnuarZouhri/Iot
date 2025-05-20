@@ -291,10 +291,17 @@ while True:
         
 
     elif stato == STATO_ALLARME:
-        oled.write(1, 1, 0, 'Allarmeeee')
-        oled.show()
         mutex.alarm()
         buzzer.play([330], 1000, 512)
+        pos=oled.write(1, 1, 0, 'Allarme\n')
+        pos = oled.write(pos[0], pos[1], 0, 'Inserisci il pin\n', clean=False)
+        oled.show()
+        password = pad.letturaPin(oled, pos)
+        if pin.checkPassword(password):
+            stato=STATO_VISTA_MENU
+        else:
+            oled.write(1, 1, 0, 'Pin errato')
+        
         #
         # Istruzioni
         #
@@ -305,5 +312,6 @@ while True:
     
     
     sleep(0.3)
+
 
 
