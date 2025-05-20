@@ -1,4 +1,4 @@
-
+import os
 
 class Password:
     
@@ -6,7 +6,7 @@ class Password:
         self.file = 'pin.txt'
         
     
-    def write(self):
+    def write(self, password):
         with open(self.file, 'w') as f:
             f.write(password)
             
@@ -16,6 +16,10 @@ class Password:
     
     def checkPassword(self, password):
         return password == self.read()
+    
+    def fileExists(self):
+        return self.file in os.listdir()
+    
     
     
             

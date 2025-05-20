@@ -1,4 +1,3 @@
-import os
 from time import sleep, localtime, ticks_ms, ticks_diff
 from KeyPad import KeyPad
 from OledClass import Oled
@@ -61,6 +60,7 @@ mqtt = MQTT(sub_callback_handler)
 handler = SensorHandler(dht22,hcsr04)
 pin = Password()
 values = []
+flagCambioConfigurazione = False
 
 
 
@@ -71,7 +71,7 @@ was_connected_MQTT = 0
 SUB_TOPICS = mqtt.getSUB_TOPICS()
 
 """ Inizializzazione dello stato """
-if not file_pin in os.listdir():
+if not pin.fileExists():
     stato = STATO_CONFIGURAZIONE_PIN
 else:
     stato = STATO_CONFIGURAZIONE_WIFI
@@ -83,7 +83,8 @@ while True:
     
     if stato == STATO_CONFIGURAZIONE_PIN:
         print('Inserire pin!!')
-        pos = oled.write(1,1,0,'Inserire il pin!\n')
+        pos = oled.write(1, 1, 0, 'Per registrarti,\n')
+        pos = oled.write(pos[0], pos[1], 0,'inserire il pin!\n', clean=False)
         oled.show()
         print(pos)
         password = ''
@@ -166,6 +167,7 @@ while True:
         timestamp = localtime()
         stringa = str(values['Temperature'])+'C'+'|'+str(values['Humidity'])+'%|'+str(timestamp[3])+':'+str(timestamp[4])+'\n'
         pos = oled.write(1,1,0,'1-Apri Porta\n')
+        pos = oled.write(pos[0], pos[1], 0, '2-Cambia config\n', clean=False)
         oled.write(pos[0], pos[1], 0, stringa,clean=False)
         oled.show()
         
@@ -177,58 +179,94 @@ while True:
             key = pad.lettura()
         print('Hai premuto',key)
         
+        
+        #
+        # AGGIORNAMENTO DELLO STATO
+        #
         if key == '1':
-            
-            password = ''
-            cont = 0
-            while not pin.checkPassword(password) and cont<3:
-                pos = oled.write(1,1,0,'Inserire il pin!\n')
-                oled.show()
-                print(pos)
-            
-                for i in range(4):
-                    key = pad.lettura()
-                    while key == None:
-                        key = pad.lettura()
-                    password = password + key
-                    print('Hai premuto',key)
-                    pos = oled.write(pos[0],pos[1],0,' * ',clean=False)
-                    oled.show()
-            
-                if pin.checkPassword(password):
-                    print('Pin corretto!')
-                else:
-                print('Pin errato..')
-            
-            if cont==3:
-                print('allarme')
-        sleep(1)
-        #
-        # Istruzioni
-        #
-        # stato = NUOVO_STATO
+            stato = STATO_INSERIMENTO_PIN
+        elif key == '2':
+            stato = STATO_CAMBIO_CONFIGURAZIONE
+        elif key == None:
+            stato = STATO_VISTA_MENU
+      
+        sleep(0.3)
+        
+   
+   
         
     elif stato == STATO_CAMBIO_CONFIGURAZIONE:
-        pass
+        pos = oled.write(1, 1, 0, 'Hai deciso di\nmodificare il\npin.')
+        sleep(0.5)
+        
+        flagCambioConfigurazione = True
+        
         #
-        # Istruzioni
+        # AGGIORNAMENTO DELLO STATO
         #
-        # stato = NUOVO_STATO
+        stato = STATO_INSERIMENTO_PIN
+        
+
     elif stato == STATO_INSERIMENTO_PIN:
-        pass
+        
+        password = ''
+        flag = False
+        cont = 0
+        pos = oled.write(1,1,0,'Inserire il pin!\n')
+        oled.show()
+        while not pin.checkPassword(password) and cont<3:
+            print(pos)
+            
+            for i in range(4):
+                key = pad.lettura()
+                while key == None:
+                    key = pad.lettura()
+                password = password + key
+                print('Hai premuto',key)
+                pos = oled.write(pos[0],pos[1],0,' * ',clean=False)
+                oled.show()
+            
+            cont = cont + 1
+            if pin.checkPassword(password):
+                print('Pin corretto!')
+                flag = True
+                oled.write(1, 1, 0, 'Pin inserito\ncorrettamente!\n:)')
+                oled.show()
+                sleep(0.5)
+            else:
+                print('Pin errato..')
+                pos = oled.write(1, 1, 0, 'Pin errato.\n'+str(3-cont)+' tentativi\nrimanenti.\n')
+                oled.show()
+                password = ''
+        
+        #
+        # AGGIORNAMENTO DELLO STATO
+        #
+        if cont == 3 and not flag:
+            stato = STATO_ALLARME
+        elif pin.checkPassword(password):
+            if flagCambioConfigurazione:
+                stato = STATO_CONFIGURAZIONE_PIN
+                flagCambioConfigurazione = False
+            else:
+                stato = STATO_SBLOCCATO
+            
+            
         #
         # Istruzioni
         #
         # stato = NUOVO_STATO
     elif stato == STATO_SBLOCCATO:
-        print('Porta aperta')
+        oled.write(1, 1, 0, 'Porta aperta!')
+        oled.show()
         #
         # Istruzioni
         #
         # stato = NUOVO_STATO
 
     elif stato == STATO_ALLARME:
-        pass
+        oled.write(1, 1, 0, 'Allarmeeee')
+        oled.show()
         #
         # Istruzioni
         #
