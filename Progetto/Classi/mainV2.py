@@ -7,6 +7,8 @@ from UltrasonicSensor import HCSR04
 from Handler import SensorHandler
 from MQTTClass import MQTT
 from PasswordClass import Password
+from AnalogicJoystick import AnalogicJoystick
+from servoMotore import ServoMotor
 
 """Callback handler"""
 
@@ -53,6 +55,9 @@ pad = KeyPad(15,4,5,18,19,14,12,23)  # Tastierino numerico
 oled = Oled()   # Oled Pin 22 e Pin 21
 dht22 = DHT22(33)
 hcsr04 = HCSR04(32,34)
+aj=AnalogicJoystick(35, 25)
+sv=ServoMotor(26)
+sv.closeDoor()
 
 """Altri oggetti utili"""
 wifi = WiFi('Galaxy A5173BB', 'aaaaaaab')
@@ -163,7 +168,7 @@ while True:
         
     elif stato == STATO_VISTA_MENU:
         timeout = 3500  # millisecondi (es. 5 secondi)
-
+        print(2)
         timestamp = localtime()
         stringa = str(values['Temperature'])+'C'+'|'+str(values['Humidity'])+'%|'+str(timestamp[3])+':'+str(timestamp[4])+'\n'
         pos = oled.write(1,1,0,'1-Apri Porta\n')
@@ -175,6 +180,7 @@ while True:
         start_time = ticks_ms()
 
         while key == None and ticks_diff(ticks_ms(), start_time) < timeout:
+            print(1)
             was_connected_MQTT = mqtt.checkAndRead_msg(wifi, was_connected_MQTT, values)
             key = pad.lettura()
         print('Hai premuto',key)
@@ -191,6 +197,12 @@ while True:
             stato = STATO_VISTA_MENU
       
         sleep(0.3)
+        
+        if not wifi.isconnected() and key==None:
+            oled.write(1, 1, 0, 'Nessuna connes\nsione WiFi')
+            oled.show()
+            stato = STATO_CONFIGURAZIONE_WIFI
+            sleep(0.5)
         
    
    
@@ -257,8 +269,21 @@ while True:
         #
         # stato = NUOVO_STATO
     elif stato == STATO_SBLOCCATO:
+        '''val=aj.goUp()
+        print('val',val)
+        while val==-1:
+            print('porta chiusa')
+            sleep(0.1)
+            val=aj.goUp()
+        '''
+        sv.openDoor()
+        sleep(1)
+        
+        
         oled.write(1, 1, 0, 'Porta aperta!')
         oled.show()
+        
+        
         #
         # Istruzioni
         #
@@ -273,11 +298,9 @@ while True:
         # stato = NUOVO_STATO
     
     
-    if not wifi.isconnected():
-        oled.write(1, 1, 0, 'Nessuna connes\nsione WiFi')
-        oled.show()
-        stato = STATO_CONFIGURAZIONE_WIFI
-        sleep(0.5)
-
+    
+    
     
     sleep(0.3)
+
+
