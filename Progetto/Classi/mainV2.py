@@ -25,6 +25,24 @@ def closeDoor(pin):
         sv.closeDoor()
         mutex.lock()
         stato = STATO_VISTA_MENU
+        
+def stopBuzzer(pin):
+    global stato, last_press_time_buzzer, flagBuzzer
+    current_time=ticks_ms()
+    if ticks_diff(current_time, last_press_time) < 200:
+        return
+    last_press_time_buzzer = current_time
+    
+    if stato==STATO_ALLARME:
+        flagBuzzer=True
+
+        
+def echo_allarm(pin):
+    global stato, standardDistance
+    if (stato==STATO_VISTA_MENU or stato==STATO_CONFIGURAZIONE_WIFI or stato==STATO_CONNESSIONE) and hcsr04.distanceCm() < standardDistance:
+        stato=STATO_ALLARME
+
+        
 
 """Callback handler"""
 
@@ -80,6 +98,9 @@ hcsr04 = HCSR04(32,34)
 sv=ServoMotor(26)
 mutex = Mutex(16, 2, 25)
 buzzer = BUZZER(17)
+btnBuzzer=Pin(13, Pin.PULL_DOWN)
+btnBuzzer.irq(trigger=Pin.IRQ_RISING, handler=stopBuzzer)
+last_press_time_buzzer=0
 
 mutex.lock()
 button = Pin(0, Pin.IN, Pin.PULL_DOWN)
@@ -93,6 +114,8 @@ handler = SensorHandler(dht22,hcsr04)
 pin = Password()
 values = []
 flagCambioConfigurazione = False
+flagBuzzer= False
+standardDistance=15
 
 
 
@@ -101,6 +124,8 @@ stato = -1
 was_connected_WiFi = 0
 was_connected_MQTT = 0
 SUB_TOPICS = mqtt.getSUB_TOPICS()
+
+hcsr04.echo.irq(trigger=Pin.IRQ_RISING, handler=echo_allarm)
 
 """ Inizializzazione dello stato """
 if not pin.fileExists():
@@ -114,7 +139,7 @@ while True:
     was_connected_MQTT = mqtt.checkAndRead_msg(wifi, was_connected_MQTT, values)
     
     if stato == STATO_CONFIGURAZIONE_PIN:
-        sv.openDoor(angle=90)
+        sv.closeDoor()
         
         print('Inserire pin!!')
         pos = oled.write(1, 1, 0, 'Per registrarti,\n')
@@ -129,7 +154,6 @@ while True:
         
         oled.write(1,1,0,'Pin inserito!',clean=True)
         oled.show()
-        sv.closeDoor()
         
         #
         # AGGIORNAMENTO DELLO STATO
@@ -244,10 +268,10 @@ while True:
         password = ''
         flag = False
         cont = 0
-        pos = oled.write(1,1,0,'Inserire il pin!\n')
-        oled.show()
         while not pin.checkPassword(password) and cont<3:
             print(pos)
+            pos = oled.write(1,1,0,'Inserire il pin corrente!\n')
+            oled.show()
             
             password = pad.letturaPin(oled, pos)
             
@@ -263,6 +287,7 @@ while True:
                 pos = oled.write(1, 1, 0, 'Pin errato.\n'+str(3-cont)+' tentativi\nrimanenti.\n')
                 oled.show()
                 password = ''
+                sleep(2)
         
         #
         # AGGIORNAMENTO DELLO STATO
@@ -292,8 +317,11 @@ while True:
 
     elif stato == STATO_ALLARME:
         mutex.alarm()
-        buzzer.play([330], 1000, 512)
         pos=oled.write(1, 1, 0, 'Allarme\n')
+        oled.show()
+        while not flagBuzzer:
+            buzzer.play([330], 1000, 512)
+        flagBuzzer=False
         pos = oled.write(pos[0], pos[1], 0, 'Inserisci il pin\n', clean=False)
         oled.show()
         password = pad.letturaPin(oled, pos)
@@ -301,6 +329,7 @@ while True:
             stato=STATO_VISTA_MENU
         else:
             oled.write(1, 1, 0, 'Pin errato')
+            oled.show()
         
         #
         # Istruzioni

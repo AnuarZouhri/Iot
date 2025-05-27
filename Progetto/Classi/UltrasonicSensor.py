@@ -21,8 +21,6 @@ class HCSR04:
         self.trigger = Pin(trigger, Pin.OUT)
         self.echo = Pin(echo, Pin.IN)
         self.timeout = timeout
-        self.newDistance=0
-        self.oldDistance=0
         
     
     '''
@@ -57,17 +55,6 @@ class HCSR04:
         cms = (pulseTime / 2) / 29.1
         return cms
     
-    '''Setta la distanza attuale'''
-    def calculateDistance(self):
-        self.oldDistance=self.distanceCm()
-    
-    '''Verifica se l'oggetto è stato spostato ovvero la distanza è aumentata'''
-    def distanceChange(self):
-        self.newDistance=self.distanceCm()
-        if self.newDistance > self.oldDistance:
-            return True
-        else:
-            return False
             
     
     
@@ -81,3 +68,4 @@ class HCSR04:
     
     
     
+
