@@ -39,7 +39,7 @@ def stopBuzzer(pin):
         
 def echo_allarm(pin):
     global stato, standardDistance
-    if (stato==STATO_VISTA_MENU or stato==STATO_CONFIGURAZIONE_WIFI or stato==STATO_CONNESSIONE) and hcsr04.distanceCm() < standardDistance:
+    if (stato==STATO_VISTA_MENU or stato==STATO_CONFIGURAZIONE_WIFI or stato==STATO_CONNESSIONE) and hcsr04.distanceCm() < standardDistance and not openDoor:
         stato=STATO_ALLARME
 
         
@@ -116,6 +116,7 @@ values = []
 flagCambioConfigurazione = False
 flagBuzzer= False
 standardDistance=15
+openDoor=False
 
 
 
@@ -303,6 +304,7 @@ while True:
             
         
     elif stato == STATO_SBLOCCATO:
+        openDoor=True
         mutex.unlock()
         sv.openDoor()
         
@@ -318,6 +320,7 @@ while True:
     elif stato == STATO_ALLARME:
         mutex.alarm()
         sv.closeDoor()
+        openDoor=False
         pos=oled.write(1, 1, 0, 'Allarme\n')
         oled.show()
         while not flagBuzzer:
