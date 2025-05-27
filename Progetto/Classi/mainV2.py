@@ -317,6 +317,7 @@ while True:
 
     elif stato == STATO_ALLARME:
         mutex.alarm()
+        sv.closeDoor()
         pos=oled.write(1, 1, 0, 'Allarme\n')
         oled.show()
         while not flagBuzzer:
