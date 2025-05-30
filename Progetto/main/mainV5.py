@@ -75,6 +75,7 @@ def sub_callback_handler(topic,msg):
             message=ujson.loads(msg)
             if 'wrong' in message and message['wrong']==1:
                 stato = STATO_SBLOCCATO
+                
         elif topic == SUB_TOPICS[1]:
             sv.closeDoor()
             mutex.lock()
@@ -84,18 +85,24 @@ def sub_callback_handler(topic,msg):
             openDoor = False
             mqtt.publish(SUB_TOPICS[0], mm.statusDoor(0))
             stato = STATO_VISTA_MENU
+            
         elif topic == SUB_TOPICS[5]:
             password = msg.decode('utf-8')
-            if pinRemote and pin.checkPassword(password):
-                stato=STATO_VISTA_MENU
-            elif pinRemote:
-                pinWrong=True
-            if pin.checkPassword(password):
-                stato = STATO_SBLOCCATO
+            if pinRemote:
+                if pin.checkPassword(password)
+                    stato=STATO_VISTA_MENU
+                    pinWrong=True
+                else:
+                    mqtt.publish(SUB_TOPICS[7], mm.wrongPinMsg())
             else:
-                mqtt.publish(SUB_TOPICS[7], mm.wrongPinMsg())
+                if pin.checkPassword(password):
+                    stato = STATO_SBLOCCATO
+                else:
+                    mqtt.publish(SUB_TOPICS[7], mm.wrongPinMsg())
+                    
         elif topic == SUB_TOPICS[10]:
             mqtt.publish(SUB_TOPICS[11], mm.correctPinMsg())
+            
         elif topic == SUB_TOPICS[12]:
             print('STOP BUZZER')
             if stato==STATO_ALLARME:
@@ -118,7 +125,7 @@ STATO_ALLARME = 8
 
 
 """ Definizione di sensori e attuatori """
-pad = KeyPad(15,4,5,18,19,14,12,33)  # Tastierino numerico
+pad = KeyPad(15,4,5,18,19,14,27,33)  # Tastierino numerico
 oled = Oled()   # Oled Pin 22 e Pin 21
 dht22 = DHT22(23)
 hcsr04 = HCSR04(32,34)
@@ -126,7 +133,7 @@ sv=ServoMotor(26)
 mutex = Mutex(16, 2, 25)
 buzzer = BUZZER(17)
 btnBuzzer=Pin(13, Pin.PULL_DOWN)
-button = Pin(0, Pin.IN, Pin.PULL_DOWN)
+button = Pin(12, Pin.IN, Pin.PULL_DOWN)
 mm = MM()
 
 btnBuzzer.irq(trigger=Pin.IRQ_RISING, handler=stopBuzzer)
@@ -360,9 +367,10 @@ while True:
             buzzer.play([330], 1000, 512)
             was_connected_MQTT = mqtt.checkAndRead_msg(wifi, was_connected_MQTT, values)
         flagBuzzer=False
-        oled.write(1, 1, 0, 'Inserisci il pin\n')
-        oled.show()
+        
         if not pinRemote:
+            oled.write(1, 1, 0, 'Inserisci il pin\n')
+            oled.show()
             password = pad.letturaPin(oled, pos)
             if pin.checkPassword(password):
                 stato=STATO_VISTA_MENU
@@ -376,6 +384,8 @@ while True:
                 oled.write(1, 1, 0, 'Pin errato')
                 oled.show()
         else:
+            oled.write(1, 1, 0, 'Inserisci il pin da remoto\n')
+            oled.show()
             while not pinWrong:
                 was_connected_MQTT = mqtt.checkAndRead_msg(wifi, was_connected_MQTT, values)
         pinWrong=False
