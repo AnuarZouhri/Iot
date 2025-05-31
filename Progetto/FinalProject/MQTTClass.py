@@ -83,8 +83,7 @@ class MQTT:
 
                 except Exception as e2:
                     print("Errore riconnessione MQTT:", e2)
-                    return 0
-        print("was_connected_MQTT:",was_connected_MQTT)        
+                    return 0     
         return was_connected_MQTT      
         
         
