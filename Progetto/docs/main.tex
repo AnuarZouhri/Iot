@@ -1,0 +1,114 @@
+\documentclass[12pt,a4paper]{article}
+
+% --- Pacchetti utili ---
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[italian]{babel}
+\usepackage{amsmath, amssymb}
+\usepackage{graphicx}
+\usepackage{hyperref}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage{caption}
+\usepackage{subcaption}
+\usepackage{fancyhdr}
+\usepackage{geometry}
+\geometry{margin=2.5cm}
+
+% --- Impostazioni per il codice sorgente ---
+\definecolor{codebg}{rgb}{0.95,0.95,0.95}
+\lstset{
+	backgroundcolor=\color{codebg},
+	basicstyle=\ttfamily\small,
+	keywordstyle=\color{blue}\bfseries,
+	commentstyle=\color{gray}\itshape,
+	stringstyle=\color{red},
+	numbers=left,
+	numberstyle=\tiny,
+	numbersep=5pt,
+	frame=single,
+	breaklines=true,
+	captionpos=b
+}
+
+% --- Header & Footer ---
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{Documentazione Progetto IoT}
+\fancyhead[R]{\leftmark}
+\fancyfoot[C]{\thepage}
+
+% --- Inizio documento ---
+\begin{document}
+	
+	\begin{titlepage}
+		\centering
+		{\scshape\LARGE Università degli Studi di Salerno \par}
+		\vspace{1cm}
+		{\scshape\Large Corso di Laurea in Ingegneria Informatica\par}
+		\vspace{2cm}
+		{\huge\bfseries Documentazione Progetto IoT\par}
+		\vspace{1.5cm}
+		{\Large Annamaria Scermino, Anuar Zourhi, Gerardo Selce \par}
+		\vspace{1.5cm}
+		{\huge\bfseries TheBox\par}
+		\vfill
+		{\large \today\par}
+	\end{titlepage}
+	
+	\tableofcontents
+	\newpage
+	
+	\section{Introduzione}
+	Descrizione generale del progetto: obiettivi, contesto, tecnologie usate (es. ESP32, MQTT, Node-RED, ecc.).\\ \\
+	
+	E' stato progettato uno smart caveaux
+	
+	\section{Architettura del Sistema}
+	Descrizione dei componenti hardware e software. Possibile diagramma a blocchi o schema circuitale:
+	
+	
+	\section{Descrizione del Codice}
+	Spiegazione dettagliata del codice, divisa per moduli o file.
+	
+	\subsection{File: \texttt{main.ino}}
+	\begin{lstlisting}[language=C++, caption={File principale per ESP32}]
+		#include <WiFi.h>
+		#include <PubSubClient.h>
+		
+		// Connessione WiFi
+		const char* ssid = "NomeRete";
+		const char* password = "password";
+		
+		// Setup
+		void setup() {
+			Serial.begin(115200);
+			WiFi.begin(ssid, password);
+			while (WiFi.status() != WL_CONNECTED) {
+				delay(500);
+				Serial.print(".");
+			}
+			Serial.println("Connesso!");
+		}
+	\end{lstlisting}
+	
+	\subsection{Funzionamento MQTT}
+	Spiegazione su come vengono pubblicati/sottoscritti i messaggi.
+	
+	\section{Interfaccia Utente}
+	Breve descrizione di eventuale dashboard (es. in Node-RED, Blynk, o web app).
+	
+	\section{Risultati e Test}
+	Dati rilevati, log di funzionamento, grafici, considerazioni.
+	
+	\section{Conclusioni}
+	Riflessioni finali, limiti, possibili miglioramenti.
+	
+	\section*{Allegati}
+	\begin{itemize}
+		\item Codice completo su GitHub: \url{https://github.com/tuo_repo}
+		\item Diagrammi circuitali
+		\item Link a demo o video
+	\end{itemize}
+	
+\end{document}
