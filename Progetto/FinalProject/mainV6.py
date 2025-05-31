@@ -15,6 +15,7 @@ from MessageMaker import MM
 import ujson
 
 
+""" Metodo richiamato quando si preme il pulsante di chiusura della porta """
 def closeDoor(pin):
     global last_press_time, stato, openDoor
     
@@ -34,6 +35,7 @@ def closeDoor(pin):
         stato = STATO_VISTA_MENU
         
         
+""" Metodo richiamato quando si preme il pulsante per spegnere il buzzer """
 def stopBuzzer(pin):
     global stato, last_press_time_buzzer, flagBuzzer
     
@@ -44,7 +46,9 @@ def stopBuzzer(pin):
     
     if stato==STATO_ALLARME:
         flagBuzzer=True
-        
+      
+      
+""" Controlla se i valori di temperatura ed umidità superano una certa soglia """
 def checkTempHum(values):
     global stato, tempAllarm, humAllarm
     temp=values['Temperature']
@@ -56,6 +60,8 @@ def checkTempHum(values):
         humAllarm=True
         stato=STATO_ALLARME
 
+
+""" Controlla se la distanza rilevata dal sensore ad ultrasuoni supera una certa soglia """
 def checkDistance():
     global stato, standardDistance, distanceAllarm
     d=hcsr04.distanceCm()
@@ -63,11 +69,10 @@ def checkDistance():
         distanceAllarm=True
         stato=STATO_ALLARME
         
+        
 """Callback handler"""
-
 def sub_callback_handler(topic,msg):
         global stato, SUB_TOPICS, pin, mqtt, openDoor, flagBuzzer, pinRemote, correctPin
-        print('topic ', topic)
         if topic == SUB_TOPICS[0]:
             message=ujson.loads(msg)
             if 'wrong' in message and message['wrong']==1:
@@ -117,7 +122,6 @@ STATO_VISTA_MENU = 3
 STATO_CAMBIO_CONFIGURAZIONE = 4
 STATO_INSERIMENTO_PIN = 5
 STATO_SBLOCCATO = 6
-
 """ Stato allarme """
 STATO_ALLARME = 8
 
@@ -133,7 +137,6 @@ buzzer = BUZZER(17)
 btnBuzzer=Pin(13, Pin.IN, Pin.PULL_DOWN)
 button = Pin(12, Pin.IN, Pin.PULL_DOWN)
 
-
 btnBuzzer.irq(trigger=Pin.IRQ_RISING, handler=stopBuzzer)
 button.irq(trigger=Pin.IRQ_RISING, handler=closeDoor)
 
@@ -141,7 +144,7 @@ button.irq(trigger=Pin.IRQ_RISING, handler=closeDoor)
 """Altri oggetti utili"""
 wifi = WiFi('Galaxy A5173BB', 'aaaaaaab')
 mqtt = MQTT(sub_callback_handler)
-handler = SensorHandler(dht22,hcsr04)
+handler = SensorHandler(dht22)
 mm = MM()
 pin = Password()
 values = []
@@ -236,7 +239,6 @@ while True:
             pos = oled.write(1, 1, 0, 'Connessione\nnon riuscita..')
             oled.show()
             stato = STATO_VISTA_MENU
-            print('Aggiorno stato su vista menu')
             was_connected_MQTT = 0
         sleep(0.5)
          

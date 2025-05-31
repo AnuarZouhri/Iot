@@ -1,22 +1,18 @@
 from dht22 import DHT22
-from UltrasonicSensor import HCSR04
 
+""" Classe create per ottenere i valori letti dal sensore di umidità e temperatura """
 class SensorHandler:
     
-    def __init__(self,dht22,hcsr04):
-        
+    """ Costruttore """
+    def __init__(self,dht22):
         self.dht22 = dht22
-        self.hcsr04 = hcsr04
         
-    
+        
+    """ Legge i valori e ne crea un dizionario """
     def read(self):
         dht_values = self.dht22.measure()
-        hcsr04_values = self.hcsr04.distanceCm()
-        #joystick_values = self.joystick.readY()
-        
         dict_values = { "Temperature": dht_values[0] ,
-                        "Humidity": dht_values[1],
-                        "Distance cm" : hcsr04_values
+                        "Humidity": dht_values[1]
                       }
         return dict_values
     
