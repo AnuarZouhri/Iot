@@ -52,7 +52,7 @@ def checkTempHum(values):
     if temp is not None and temp>50:
         tempAllarm=True
         stato=STATO_ALLARME
-    elif hum is not None and (hum < 20 or hum > 50):
+    elif hum is not None and (hum < 20 or hum > 70):
         humAllarm=True
         stato=STATO_ALLARME
 
