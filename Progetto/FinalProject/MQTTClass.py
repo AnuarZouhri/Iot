@@ -82,6 +82,7 @@ class MQTT:
                     self.subscribes()
                     
                     print("Riconnesso MQTT dopo errore")
+                    self.publish(self.TOPIC_SUB12, self.mMaker.correctPinMsg())
                     return 1
 
                 except Exception as e2:
