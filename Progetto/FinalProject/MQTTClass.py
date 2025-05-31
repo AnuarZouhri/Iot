@@ -3,6 +3,7 @@ from MessageMaker import MM
 
 class MQTT:
     
+    """ Costruttore """
     def __init__(self, sub_callback_handler):
         """ Definizione variabili connessione MQTT """
         self.CLIENT_ID   = 'esp32'
@@ -43,7 +44,8 @@ class MQTT:
         """ Inizializzazione oggetto MMaker """
         self.mMaker = MM()
     
-    """Subscribe def"""
+    
+    """ Il client si sottoscrive ai topics """
     def subscribes(self):
         for topic in self.SUB_TOPICS_SUB:
             self.client.subscribe(topic)
@@ -80,15 +82,21 @@ class MQTT:
                     return 0
         print("was_connected_MQTT:",was_connected_MQTT)        
         return was_connected_MQTT      
-                    
+        
+        
+    """ Restituisce l'insieme di topics """
     def getSUB_TOPICS(self):
         return self.SUB_TOPICS
+    
     
     def connect(self):
         self.client.connect()
     
+    
     def disconnect(self):
         self.client.disconnect()
         
+        
+    """ Pubblica su TOPIC il messaggio msg """
     def publish(self, TOPIC, msg):
         self.client.publish(TOPIC, msg)

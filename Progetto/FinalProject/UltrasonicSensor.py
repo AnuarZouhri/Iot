@@ -2,31 +2,17 @@ import machine
 from machine import Pin
 from time import sleep_ms
 
-'''
-come funziona il sensore? il trigger emette ciclicamente
-onde sonore, i quali si propagano nell'aria alla velocità
-del suono. Quando vi è un oggetto avanti tale impulso viene riflesso
-e rilevato da eco.
-La distanza si calcola in base al tempo tra la trasmissione
-dell'impulso e la ricezione del segnale d'eco.
-distanza=(velocitàPropagazioneOndaSonora*tempoTraTrasmissioneERicezione)/2
 
-'''
-
+""" Classe per gestire il sensore ad ultrasuoni """
 class HCSR04:
-    '''
-    Prende il pin di trigger, eco e il timeout indica il tempo massimo atteso entro cui si può rilevare un eco
-    '''
+    
+    """ Costruttore """
     def __init__(self, trigger, echo, timeout=500*2*30):
         self.trigger = Pin(trigger, Pin.OUT)
         self.echo = Pin(echo, Pin.IN)
         self.timeout = timeout
         
-    
-    '''
-    Il trigger invia un'onda sonora e nel caso echo rileva un riflesso
-    conta per quanti ms resta a 1. Se echo 
-    '''
+    """ Il trigger invia un'onda sonora e si conta per quanti ms echo resta a 1 """
     def pulseAndWait(self):
         self.trigger.value(0)
         sleep_ms(5)
@@ -34,22 +20,14 @@ class HCSR04:
         sleep_ms(100)
         self.trigger.value(0)
         try:
-            pulse_time = machine.time_pulse_us(self.echo, 1, self.timeout) # mi dice quanto tempo echo resta a 1
+            pulse_time = machine.time_pulse_us(self.echo, 1, self.timeout)
             return pulse_time
-        except OSError as ex: #nel caso echo non va a 1 in timeout ms
+        except OSError as ex:
             if ex.args[0] == 110:
                 raise OSError('Out of range')
             raise ex
 
-
-    '''Restituisce la distanza in mm dall'oggetto che ha avanti
-    def distanceMm(self):
-        pulseTime = self.pulseAndWait()
-        mm = pulseTime * 100 // 582
-        return mm
-    '''
-    
-    '''Restituisce la distanza in cm dall'oggetto che ha avanti'''
+    """ Calcola la distanza in cm tra il sensore ad ultrasuoni e l'oggetto posto dinanzi """
     def distanceCm(self):
         pulseTime = self.pulseAndWait()
         cms = (pulseTime / 2) / 29.1
