@@ -60,13 +60,24 @@
 	\newpage
 	
 	\section{Introduzione}
-	Descrizione generale del progetto: obiettivi, contesto, tecnologie usate (es. ESP32, MQTT, Node-RED, ecc.).\\ \\
-	
-	E' stato progettato uno smart caveaux
+	Il progetto sviluppato ha come obiettivo la realizzazione di uno smart caveaux. Il caveaux è dotato di un meccanismo di apertura che può essere controllato sia tramite un tastierino fisico posto all’esterno, sia da remoto attraverso una piattaforma di controllo. Il sistema integra inoltre sensori per la rilevazione di temperatura e umidità, con la capacità di attivare allarmi in caso di valori fuori soglia o tentativi di intrusione. Gli allarmi possono essere gestiti localmente o a distanza. Un semaforo posto accanto alla porta mostra lo stato del caveaux.
 	
 	\section{Architettura del Sistema}
-	Descrizione dei componenti hardware e software. Possibile diagramma a blocchi o schema circuitale:
-	
+	I componenti hardware utilizzati sono i seguenti:
+	\begin{itemize}
+		\item Un servomotore;
+		\item Un tastierino numerico;
+		\item Uno schermo OLED;
+		\item Due breadboard;
+		\item Due push-button;
+		\item Un semaforo;
+		\item Un sensore ad ultrasuoni;
+		\item Un sensore di umidità e temperatura;
+		\item Un buzzer passivo;
+		\item Una ESP32
+		\item Un relay 
+	\end{itemize}
+	Dal punto di vista software, il sistema è stato sviluppato interamente in micropython. Per il controllo remoto e il monitoraggio in tempo reale è stata realizzata una dashboard interattiva con Node-RED, che consente di visualizzare lo stato del sistema, ricevere notifiche e inviare comandi. Inoltre alcune funzionalità, come l'apertura del caveaux, sono accessibili anche da un'app mobile. I protocolli utilizzati sono: MQTT ed I2C.
 	
 	\section{Descrizione del Codice}
 	Spiegazione dettagliata del codice, divisa per moduli o file.
@@ -92,23 +103,6 @@
 		}
 	\end{lstlisting}
 	
-	\subsection{Funzionamento MQTT}
-	Spiegazione su come vengono pubblicati/sottoscritti i messaggi.
 	
-	\section{Interfaccia Utente}
-	Breve descrizione di eventuale dashboard (es. in Node-RED, Blynk, o web app).
-	
-	\section{Risultati e Test}
-	Dati rilevati, log di funzionamento, grafici, considerazioni.
-	
-	\section{Conclusioni}
-	Riflessioni finali, limiti, possibili miglioramenti.
-	
-	\section*{Allegati}
-	\begin{itemize}
-		\item Codice completo su GitHub: \url{https://github.com/tuo_repo}
-		\item Diagrammi circuitali
-		\item Link a demo o video
-	\end{itemize}
 	
 \end{document}
