@@ -4,7 +4,7 @@ from dht22 import DHT22
 class SensorHandler:
     
     """ Costruttore """
-    def __init__(self,dht22, hcsr04, sogliaTemp=50, sogliaHum=70, sogliaDis=10):
+    def __init__(self,dht22, hcsr04, sogliaTemp=50.0, sogliaHum=70.0, sogliaDis=10.0):
         self.dht22 = dht22
         self.hcsr04 = hcsr04
         self.sogliaTemp = sogliaTemp

@@ -26,6 +26,7 @@ class MQTT:
         self.TOPIC_SUB13 = b'TheBox/Allarme/StopBuzzer'
         self.TOPIC_SUB14 = b'TheBox/CaveauxStatus/Temp/NuovaSoglia'
         self.TOPIC_SUB15 = b'TheBox/CaveauxStatus/Hum/NuovaSoglia'
+        self.TOPIC_SUB16 = b'TheBox/CaveauxStatus/Dis/NuovaSoglia'
         self.SUB_TOPICS  = [self.TOPIC_SUB1, self.TOPIC_SUB2,
                             self.TOPIC_SUB3, self.TOPIC_SUB4,
                             self.TOPIC_SUB5, self.TOPIC_SUB6,
@@ -33,7 +34,7 @@ class MQTT:
                             self.TOPIC_SUB9, self.TOPIC_SUB10,
                             self.TOPIC_SUB11, self.TOPIC_SUB12,
                             self.TOPIC_SUB13, self.TOPIC_SUB14,
-                            self.TOPIC_SUB15]
+                            self.TOPIC_SUB15, self.TOPIC_SUB16]
         self.SUB_TOPICS_SUB=[self.TOPIC_SUB2, self.TOPIC_SUB6,
                              self.TOPIC_SUB11, self.TOPIC_SUB13]
         

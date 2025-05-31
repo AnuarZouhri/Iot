@@ -50,7 +50,7 @@ def stopBuzzer(pin):
         
 """Callback handler"""
 def sub_callback_handler(topic,msg):
-        global stato, SUB_TOPICS, pin, mqtt, openDoor, flagBuzzer, pinRemote, correctPin
+        global stato, SUB_TOPICS, pin, mqtt, openDoor, flagBuzzer, pinRemote, correctPin, handler
         if topic == SUB_TOPICS[0]:
             message=ujson.loads(msg)
             if 'wrong' in message and message['wrong']==1:
@@ -89,7 +89,18 @@ def sub_callback_handler(topic,msg):
             if stato==STATO_ALLARME:
                 flagBuzzer=True
                 pinRemote=True
+                
+        elif topic == SUB_TOPICS[13]:
+            nuovaSogliaTemp = float(msg.decode('utf-8'))
+            handler.setSogliaTemp(nuovaSogliaTemp)
             
+        elif topic == SUB_TOPICS[14]:
+            nuovaSogliaHum = float(msg.decode('utf-8'))
+            handler.setSogliaHum(nuovaSogliaHum)
+            
+        elif topic == SUB_TOPICS[15]:
+            nuovaSogliaDis = float(msg.decode('utf-8'))
+            handler.setSogliaDis(nuovaSogliaDis)
                 
 
 """ Stati principali """
