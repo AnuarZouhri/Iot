@@ -138,9 +138,6 @@ pinRemote=False
 correctPin=False
 last_press_time_buzzer=0
 last_press_time = 0
-standardDistance=10
-maxTemperature=50
-maxHumidity=70
 i=1
 
 
@@ -170,7 +167,7 @@ sleep(0.5)
 while True:
     
     values = handler.readDht22()
-    handlerCheck = handler.checkTempHum(values['Temperature'], maxTemperature, values['Humidity'], maxHumidity)
+    handlerCheck = handler.checkTempHum(values['Temperature'], values['Humidity'])
     
     if handlerCheck==1:
         tempAllarm=True
@@ -178,7 +175,7 @@ while True:
     elif handlerCheck==2:
         humAllarm=True
         stato=STATO_ALLARME  
-    elif handler.checkDistance(standardDistance) and stato!=STATO_SBLOCCATO:
+    elif handler.checkDistance() and stato!=STATO_SBLOCCATO:
         distanceAllarm=True
         stato=STATO_ALLARME
         
@@ -276,7 +273,7 @@ while True:
         while key == None and ticks_diff(ticks_ms(), start_time) < timeout and stato != STATO_ALLARME:
             was_connected_MQTT = mqtt.checkAndRead_msg(wifi, was_connected_MQTT, values)
             key = pad.lettura()
-            if handler.checkDistance(standardDistance) and stato!=STATO_SBLOCCATO:
+            if handler.checkDistance() and stato!=STATO_SBLOCCATO:
                 distanceAllarm=True
                 stato=STATO_ALLARME
        
@@ -391,4 +388,5 @@ while True:
                 was_connected_MQTT = mqtt.checkAndRead_msg(wifi, was_connected_MQTT, values)
         correctPin=False
         pinRemote=False
-        
+     
+    sleep(0.1)

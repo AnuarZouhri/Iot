@@ -14,7 +14,7 @@ class MQTT:
         self.TOPIC_SUB1  = b'TheBox/OpenCaveaux'
         self.TOPIC_SUB2  = b'TheBox/CloseCaveaux'
         self.TOPIC_SUB3  = b'TheBox/CaveauxStatus'
-        self.TOPIC_SUB4  = b'TheBox/CaveauxStatus/Temp'
+        self.TOPIC_SUB4  = b''
         self.TOPIC_SUB5  = b'TheBox/CaveauxStatus/Hum'
         self.TOPIC_SUB6  = b'TheBox/Pin'
         self.TOPIC_SUB7  = b'TheBox/Pin/WrongPassword'
@@ -24,13 +24,16 @@ class MQTT:
         self.TOPIC_SUB11 = b'TheBox/Status/Ping'
         self.TOPIC_SUB12 = b'TheBox/Status/Pong'
         self.TOPIC_SUB13 = b'TheBox/Allarme/StopBuzzer'
+        self.TOPIC_SUB14 = b'TheBox/CaveauxStatus/Temp/NuovaSoglia'
+        self.TOPIC_SUB15 = b'TheBox/CaveauxStatus/Hum/NuovaSoglia'
         self.SUB_TOPICS  = [self.TOPIC_SUB1, self.TOPIC_SUB2,
                             self.TOPIC_SUB3, self.TOPIC_SUB4,
                             self.TOPIC_SUB5, self.TOPIC_SUB6,
                             self.TOPIC_SUB7, self.TOPIC_SUB8,
                             self.TOPIC_SUB9, self.TOPIC_SUB10,
                             self.TOPIC_SUB11, self.TOPIC_SUB12,
-                            self.TOPIC_SUB13]
+                            self.TOPIC_SUB13, self.TOPIC_SUB14,
+                            self.TOPIC_SUB15]
         self.SUB_TOPICS_SUB=[self.TOPIC_SUB2, self.TOPIC_SUB6,
                              self.TOPIC_SUB11, self.TOPIC_SUB13]
         
