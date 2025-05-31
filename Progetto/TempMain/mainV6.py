@@ -46,28 +46,6 @@ def stopBuzzer(pin):
     
     if stato==STATO_ALLARME:
         flagBuzzer=True
-      
-      
-""" Controlla se i valori di temperatura ed umidità superano una certa soglia """
-def checkTempHum(values):
-    global stato, tempAllarm, humAllarm
-    temp=values['Temperature']
-    hum=values['Humidity']
-    if temp is not None and temp>50:
-        tempAllarm=True
-        stato=STATO_ALLARME
-    elif hum is not None and (hum < 20 or hum > 70):
-        humAllarm=True
-        stato=STATO_ALLARME
-
-
-""" Controlla se la distanza rilevata dal sensore ad ultrasuoni supera una certa soglia """
-def checkDistance():
-    global stato, standardDistance, distanceAllarm
-    d=hcsr04.distanceCm()
-    if d<standardDistance and stato!=STATO_SBLOCCATO:
-        distanceAllarm=True
-        stato=STATO_ALLARME
         
         
 """Callback handler"""
