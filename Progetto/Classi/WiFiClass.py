@@ -16,7 +16,7 @@ class WiFi:
         
    
         x = 0.1
-        timeout = 6
+        timeout = 3
         try:
             
             self.sta_if.connect(self.hotspot, self.password)

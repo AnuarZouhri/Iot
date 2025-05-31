@@ -15,7 +15,7 @@ class ServoMotor():
     def closeDoor(self, angle=180):
         self.set_angle(angle)
         
-'''
+
 sv=ServoMotor(23)
 
 while True:
@@ -24,4 +24,4 @@ while True:
     sv.closeDoor()
     sleep(1)
     
-'''
+

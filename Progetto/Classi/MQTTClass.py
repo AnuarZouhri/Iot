@@ -10,38 +10,48 @@ class MQTT:
         self.USER        = ''
         self.PASSWORD    = ''
         self.TOPIC       = b'TheBox'
-        self.TOPIC_SUB1  = b'TheBox/OpenCavueaux'
+        self.TOPIC_SUB1  = b'TheBox/OpenCaveaux'
         self.TOPIC_SUB2  = b'TheBox/CloseCaveaux'
         self.TOPIC_SUB3  = b'TheBox/CaveauxStatus'
         self.TOPIC_SUB4  = b'TheBox/CaveauxStatus/Temp'
         self.TOPIC_SUB5  = b'TheBox/CaveauxStatus/Hum'
         self.TOPIC_SUB6  = b'TheBox/Pin'
-        self.TOPIC_SUB7  = b'TheBox/Pin/Result'
+        self.TOPIC_SUB7  = b'TheBox/Pin/WrongPassword'
+        self.TOPIC_SUB8  = b'TheBox/Allarme/Furto'
+        self.TOPIC_SUB9  = b'TheBox/Allarme/Risolto'
+        self.TOPIC_SUB10 = b'TheBox/Allarme/PinErrato'
+        self.TOPIC_SUB11 = b'TheBox/Status/Ping'
+        self.TOPIC_SUB12 = b'TheBox/Status/Pong'
+        self.TOPIC_SUB13 = b'TheBox/Allarme/StopBuzzer'
         self.SUB_TOPICS  = [self.TOPIC_SUB1, self.TOPIC_SUB2,
                             self.TOPIC_SUB3, self.TOPIC_SUB4,
                             self.TOPIC_SUB5, self.TOPIC_SUB6,
-                            self.TOPIC_SUB7]
+                            self.TOPIC_SUB7, self.TOPIC_SUB8,
+                            self.TOPIC_SUB9, self.TOPIC_SUB10,
+                            self.TOPIC_SUB11, self.TOPIC_SUB12,
+                            self.TOPIC_SUB13]
+        self.SUB_TOPICS_SUB=[self.TOPIC_SUB2, self.TOPIC_SUB6,
+                             self.TOPIC_SUB11, self.TOPIC_SUB13]
         
         """ Inizializzazione dell'oggetto client """
         self.client = MQTTClient(self.CLIENT_ID, self.BROKER,
                                  user=self.USER, password=self.PASSWORD,
                                  keepalive=60)
-        self.client.set_callback(sub_callback_handler)
+        self.sub_callback_handler = sub_callback_handler
+        self.client.set_callback(self.sub_callback_handler)
     
         """ Inizializzazione oggetto MMaker """
         self.mMaker = MM()
     
     """Subscribe def"""
     def subscribes(self):
-        for topic in self.SUB_TOPICS:
+        for topic in self.SUB_TOPICS_SUB:
             self.client.subscribe(topic)
 
 
     def checkAndRead_msg(self, wifi, was_connected_MQTT, values):
         if wifi.isconnected() and self.client is not None and was_connected_MQTT:
             try:
-                #print('primo')
-
                 self.client.check_msg()
                 message = self.mMaker.temperatureMsg(values["Temperature"])
                 if message is not None:
@@ -58,13 +68,17 @@ class MQTT:
                 except:
                     pass
                 try:
+                    self.client.set_callback(self.sub_callback_handler)
                     self.connect()
                     self.subscribes()
-                    return 1
+                    
                     print("Riconnesso MQTT dopo errore")
+                    return 1
+
                 except Exception as e2:
                     print("Errore riconnessione MQTT:", e2)
                     return 0
+        print("was_connected_MQTT:",was_connected_MQTT)        
         return was_connected_MQTT      
                     
     def getSUB_TOPICS(self):
