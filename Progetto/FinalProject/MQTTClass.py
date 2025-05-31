@@ -35,8 +35,11 @@ class MQTT:
                             self.TOPIC_SUB11, self.TOPIC_SUB12,
                             self.TOPIC_SUB13, self.TOPIC_SUB14,
                             self.TOPIC_SUB15, self.TOPIC_SUB16]
+        
         self.SUB_TOPICS_SUB=[self.TOPIC_SUB2, self.TOPIC_SUB6,
-                             self.TOPIC_SUB11, self.TOPIC_SUB13]
+                             self.TOPIC_SUB11, self.TOPIC_SUB13,
+                             self.TOPIC_SUB14, self.TOPIC_SUB15,
+                             self.TOPIC_SUB16]
         
         """ Inizializzazione dell'oggetto client """
         self.client = MQTTClient(self.CLIENT_ID, self.BROKER,

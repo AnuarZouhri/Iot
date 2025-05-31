@@ -91,6 +91,7 @@ def sub_callback_handler(topic,msg):
                 pinRemote=True
                 
         elif topic == SUB_TOPICS[13]:
+            print(handler.getSogliaTemp())
             nuovaSogliaTemp = float(msg.decode('utf-8'))
             handler.setSogliaTemp(nuovaSogliaTemp)
             
