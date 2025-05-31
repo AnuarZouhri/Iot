@@ -8,34 +8,34 @@ class SensorHandler:
     def __init__(self,dht22, hcsr04, sogliaTemp=50.0, sogliaHum=70.0, sogliaDis=10.0):
         self.dht22 = dht22
         self.hcsr04 = hcsr04
-        self.sogliaTemp = ''
-        self.sogliaHum = ''
-        self.sogliaDis = ''
+        self.sogliaTemp = 0.0
+        self.sogliaHum = 0.0
+        self.sogliaDis = 0.0
         
         if 'temp.txt' in os.listdir():
             with open('temp.txt', 'r') as f:
-                self.sogliaTemp = f.read()
+                self.sogliaTemp = float(f.read())
         else:
             with open('temp.txt', 'w') as f:
                 f.write(str(sogliaTemp))
+                self.sogliaTemp = sogliaTemp
          
         if 'hum.txt' in os.listdir():
             with open('hum.txt', 'r') as f:
-                self.sogliaHum = f.read()
+                self.sogliaHum = float(f.read())
         else:
             with open('hum.txt', 'w') as f:
                 f.write(str(sogliaHum))
+                self.sogliaHum = sogliaHum
                 
         if 'dis.txt' in os.listdir():
             with open('dis.txt', 'r') as f:
-                self.sogliaDis = f.read()
+                self.sogliaDis = float(f.read())
         else:
             with open('dis.txt', 'w') as f:
                 f.write(str(sogliaDis))
+                self.sogliaDis = sogliaDis
         
-        self.sogliaTemp = float(self.sogliaTemp)
-        self.sogliaHum = float(self.sogliaHum)
-        self.sogliaDis = float(self.sogliaDis)
         
         
     """ Legge i valori e ne crea un dizionario """
