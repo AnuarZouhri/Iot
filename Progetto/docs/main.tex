@@ -80,29 +80,259 @@
 	Dal punto di vista software, il sistema è stato sviluppato interamente in micropython. Per il controllo remoto e il monitoraggio in tempo reale è stata realizzata una dashboard interattiva con Node-RED, che consente di visualizzare lo stato del sistema, ricevere notifiche e inviare comandi. Inoltre alcune funzionalità, come l'apertura del caveaux, sono accessibili anche da un'app mobile. I protocolli utilizzati sono: MQTT ed I2C.
 	
 	\section{Descrizione del Codice}
-	Spiegazione dettagliata del codice, divisa per moduli o file.
 	
-	\subsection{File: \texttt{main.ino}}
-	\begin{lstlisting}[language=C++, caption={File principale per ESP32}]
-		#include <WiFi.h>
-		#include <PubSubClient.h>
+	\subsection{File: \texttt{main.py}}
+	\begin{lstlisting}[language=Python, caption={Il main del programma è stato sviluppato come un automa a stati a finiti e qui sono rappresentati i vari stati. Lo stato di configurazione pin è lo stato che viene eseguito alla prima esecuzione del programma: qui viene configurato il file contenente il pin d'accesso al caveaux. Lo stato di configurazione wifi è eseguito sequenzialmente a quello di configurazione pin. Lo stato di connessione permette la connessione all'MQTT. Finiti i vari step di connessione si accede allo stato di vista menu, in cui vengono riportati parametri interni al caveaux, quali temperatura e umidità, ed è inoltre possibile scegliere di accedere al caveaux o di cambiare configurazione. Entrambe le opzioni appena descritte vengono eseguite in appositi stati: stato di inserimento pin e stato di cambio configurazione. Una volta sbloccato il caveaux si entra nello stato sbloccato. In caso di intrusione o valori di temperatura e umidità fuori norma si entra nello stato di allarme.}]
+while True:
 		
-		// Connessione WiFi
-		const char* ssid = "NomeRete";
-		const char* password = "password";
+	if stato == STATO_CONFIGURAZIONE_PIN:
+		pass
+		#
+		# AGGIORNAMENTO DELLO STATO
+		#
+		stato = NUOVO_STATO
 		
-		// Setup
-		void setup() {
-			Serial.begin(115200);
-			WiFi.begin(ssid, password);
-			while (WiFi.status() != WL_CONNECTED) {
-				delay(500);
-				Serial.print(".");
-			}
-			Serial.println("Connesso!");
-		}
+	elif stato == STATO_CONFIGURAZIONE_WIFI:
+		pass
+		#
+		# AGGIORNAMENTO DELLO STATO
+		#
+		stato = NUOVO_STATO
+		
+	elif stato == STATO_CONNESSIONE:
+		pass
+		#
+		# AGGIORNAMENTO DELLO STATO
+		#
+		stato = NUOVO_STATO
+		
+	elif stato == STATO_VISTA_MENU:
+		pass
+		#
+		# AGGIORNAMENTO DELLO STATO
+		#
+		stato = NUOVO_STATO
+		
+	elif stato == STATO_CAMBIO_CONFIGURAZIONE:
+		pass
+		#
+		# AGGIORNAMENTO DELLO STATO
+		#
+		stato = NUOVO_STATO
+		
+	elif stato == STATO_INSERIMENTO_PIN:
+		pass
+		#
+		# AGGIORNAMENTO DELLO STATO
+		#
+		stato = NUOVO_STATO
+		
+	elif stato == STATO_SBLOCCATO:
+		pass
+		#
+		# AGGIORNAMENTO DELLO STATO
+		#
+		stato = NUOVO_STATO
+		
+	elif stato == STATO_ALLARME:
+		pass
+		#
+		# AGGIORNAMENTO DELLO STATO
+		#
+		stato = NUOVO_STATO
 	\end{lstlisting}
 	
+	\subsection{File: \texttt{Handler.py}}
+	\begin{lstlisting}[language=Python, caption={Questa classe gestisce la lettura del sensore ad ultrasuoni (hcsr04) e del sensore di umidità e temperatura (dht22) e il controllo che i valori letti siano minori di una certa soglia. Il costruttore inizializza le soglie con i valori imposti alla precedente esecuzione (leggendo da file) o tramite parametri di input. I metodi read() e check() permettono rispettivamente la lettura dei valori e il loro controllo. È inoltre possibile modificare le soglie tramite metodi set().}]
+class SensorHandler:
+
+	""" Costruttore """
+	def __init__(self,dht22, hcsr04, sogliaTemp=50.0, sogliaHum=70.0, sogliaDis=10.0):
+		self.dht22 = dht22
+		self.hcsr04 = hcsr04
+		self.sogliaTemp = 0.0
+		self.sogliaHum = 0.0
+		self.sogliaDis = 0.0
+		
+		if 'temp.txt' in os.listdir():
+			with open('temp.txt', 'r') as f:
+				self.sogliaTemp = float(f.read())
+		else:
+			with open('temp.txt', 'w') as f:
+				f.write(str(sogliaTemp))
+				self.sogliaTemp = sogliaTemp
+		
+		if 'hum.txt' in os.listdir():
+			with open('hum.txt', 'r') as f:
+				self.sogliaHum = float(f.read())
+		else:
+			with open('hum.txt', 'w') as f:
+				f.write(str(sogliaHum))
+				self.sogliaHum = sogliaHum
+		
+		if 'dis.txt' in os.listdir():
+			with open('dis.txt', 'r') as f:
+				self.sogliaDis = float(f.read())
+		else:
+			with open('dis.txt', 'w') as f:
+				f.write(str(sogliaDis))
+				self.sogliaDis = sogliaDis
 	
 	
+	
+	""" Legge i valori e ne crea un dizionario """
+	def readDht22(self):
+		dht_values = self.dht22.measure()
+		dict_values = { "Temperature": dht_values[0] ,
+						"Humidity": dht_values[1]
+					}
+		return dict_values
+	
+	
+	def readHcsr04(self):
+		return self.hcsr04.distanceCm()
+	
+	
+	def checkDistance(self):
+		return self.readHcsr04() < self.sogliaDis
+	
+	
+	def checkTempHum(self, temp, hum):
+		if temp is not None and temp >= self.sogliaTemp:
+			return 1
+		elif hum is not None and hum >= self.sogliaHum:
+			return 2
+	
+		return 0
+	
+	def setSogliaTemp(self, sogliaTemp):
+		self.sogliaTemp = sogliaTemp
+		with open('temp.txt', 'w') as f:
+			f.write(str(sogliaTemp))
+	
+	def setSogliaHum(self, sogliaHum):
+		self.sogliaHum = sogliaHum
+		with open('hum.txt', 'w') as f:
+			f.write(str(sogliaHum))
+	
+	def setSogliaDis(self, sogliaDis):
+		self.sogliaDist = sogliaDist
+		with open('dis.txt', 'w') as f:
+			f.write(str(sogliaDis))
+	
+	\end{lstlisting}
+
+
+
+\subsection{File: \texttt{MQTTClass.py}}
+\begin{lstlisting}[language=Python, caption={Questa classe gestisce la creazione del client MQTT. Il costruttore inizializza i vari topic e altre variabili di connessione quali indirizzo ip del broken e id del client. Infine inizializza l'oggetto client impostando la funzione di callback inviata come parametro di input. Il metodo checkAndReadMsg() pubblica i valori letti dal sensore di umidità e temperatura e risolve eventuali problemi di connessione.}]	
+class MQTT:
+
+	""" Costruttore """
+	def __init__(self, sub_callback_handler):
+		""" Definizione variabili connessione MQTT """
+		self.CLIENT_ID   = 'esp32'
+		self.BROKER      = '192.168.131.51'
+		self.USER        = ''
+		self.PASSWORD    = ''
+		self.TOPIC       = b'TheBox'
+		self.TOPIC_SUB1  = b'TheBox/OpenCaveaux'
+		self.TOPIC_SUB2  = b'TheBox/CloseCaveaux'
+		self.TOPIC_SUB3  = b'TheBox/CaveauxStatus'
+		self.TOPIC_SUB4  = b''
+		self.TOPIC_SUB5  = b'TheBox/CaveauxStatus/Hum'
+		self.TOPIC_SUB6  = b'TheBox/Pin'
+		self.TOPIC_SUB7  = b'TheBox/Pin/WrongPassword'
+		self.TOPIC_SUB8  = b'TheBox/Allarme/Furto'
+		self.TOPIC_SUB9  = b'TheBox/Allarme/Risolto'
+		self.TOPIC_SUB10 = b'TheBox/Allarme/PinErrato'
+		self.TOPIC_SUB11 = b'TheBox/Status/Ping'
+		self.TOPIC_SUB12 = b'TheBox/Status/Pong'
+		self.TOPIC_SUB13 = b'TheBox/Allarme/StopBuzzer'
+		self.TOPIC_SUB14 = b'TheBox/CaveauxStatus/Temp/NuovaSoglia'
+		self.TOPIC_SUB15 = b'TheBox/CaveauxStatus/Hum/NuovaSoglia'
+		self.TOPIC_SUB16 = b'TheBox/CaveauxStatus/Dis/NuovaSoglia'
+		self.SUB_TOPICS  = [self.TOPIC_SUB1, 
+		self.TOPIC_SUB2, self.TOPIC_SUB3, 
+		self.TOPIC_SUB4, self.TOPIC_SUB5, 
+		self.TOPIC_SUB6, self.TOPIC_SUB7, 
+		self.TOPIC_SUB8, self.TOPIC_SUB9, 
+		self.TOPIC_SUB10, self.TOPIC_SUB11, 
+		self.TOPIC_SUB12, self.TOPIC_SUB13, 
+		self.TOPIC_SUB14, self.TOPIC_SUB15, 
+		self.TOPIC_SUB16]
+		
+		self.SUB_TOPICS_SUB=[self.TOPIC_SUB2, 
+		self.TOPIC_SUB6, self.TOPIC_SUB11, 
+		self.TOPIC_SUB13, self.TOPIC_SUB14, 
+		self.TOPIC_SUB15, self.TOPIC_SUB16]
+	
+		""" Inizializzazione dell'oggetto client """
+		self.client = MQTTClient(self.CLIENT_ID, 
+		self.BROKER, user=self.USER, 
+		password=self.PASSWORD, keepalive=60)
+		self.sub_callback_handler = sub_callback_handler
+		self.client.set_callback(self.sub_callback_handler)
+		
+		""" Inizializzazione oggetto MMaker """
+		self.mMaker = MM()
+	
+	
+	""" Il client si sottoscrive ai topics """
+	def subscribes(self):
+		for topic in self.SUB_TOPICS_SUB:
+			self.client.subscribe(topic)
+	
+	
+	def checkAndRead_msg(self, wifi, was_connected_MQTT, values):
+		if wifi.isconnected() and self.client is not None and was_connected_MQTT:
+			try:
+				self.client.check_msg()
+				message = self.mMaker.temperatureMsg(values["Temperature"])
+				if message is not None:
+					self.publish(self.TOPIC_SUB4,message)
+				message = self.mMaker.humidityMsg(values["Humidity"])
+				if message is not None:
+					self.publish(self.TOPIC_SUB5,message)
+		
+		
+			except OSError as e:
+				print("Errore OSError in check_msg:", e)
+				try:
+					self.disconnect()
+				except:
+					pass
+				try:
+					self.client.set_callback(self.sub_callback_handler)
+					self.connect()
+					self.subscribes()
+					
+					print("Riconnesso MQTT dopo errore")
+					return 1
+				
+				except Exception as e2:
+					print("Errore riconnessione MQTT:", e2)
+					return 0     
+		return was_connected_MQTT      
+	
+	
+	""" Restituisce l'insieme di topics """
+	def getSUB_TOPICS(self):
+		return self.SUB_TOPICS
+	
+	
+	def connect(self):
+		self.client.connect()
+	
+	
+	def disconnect(self):
+		self.client.disconnect()
+	
+	
+	""" Pubblica su TOPIC il messaggio msg """
+	def publish(self, TOPIC, msg):
+		self.client.publish(TOPIC, msg)	
+	
+\end{lstlisting}
+
 \end{document}
