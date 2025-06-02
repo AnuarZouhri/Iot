@@ -80,6 +80,7 @@
 	Dal punto di vista software, il sistema è stato sviluppato interamente in micropython. Per il controllo remoto e il monitoraggio in tempo reale è stata realizzata una dashboard interattiva con Node-RED, che consente di visualizzare lo stato del sistema, ricevere notifiche e inviare comandi. Inoltre alcune funzionalità, come l'apertura del caveaux, sono accessibili anche da un'app mobile. I protocolli utilizzati sono: MQTT ed I2C.
 	
 	\section{Descrizione del Codice}
+	Sono state riportate solo le classi ritenute particolarmente significative.
 	
 	\subsection{File: \texttt{main.py}}
 	\begin{lstlisting}[language=Python, caption={Il main del programma è stato sviluppato come un automa a stati a finiti e qui sono rappresentati i vari stati. Lo stato di configurazione pin è lo stato che viene eseguito alla prima esecuzione del programma: qui viene configurato il file contenente il pin d'accesso al caveaux. Lo stato di configurazione wifi è eseguito sequenzialmente a quello di configurazione pin. Lo stato di connessione permette la connessione all'MQTT. Finiti i vari step di connessione si accede allo stato di vista menu, in cui vengono riportati parametri interni al caveaux, quali temperatura e umidità, ed è inoltre possibile scegliere di accedere al caveaux o di cambiare configurazione. Entrambe le opzioni appena descritte vengono eseguite in appositi stati: stato di inserimento pin e stato di cambio configurazione. Una volta sbloccato il caveaux si entra nello stato sbloccato. In caso di intrusione o valori di temperatura e umidità fuori norma si entra nello stato di allarme.}]
@@ -334,5 +335,68 @@ class MQTT:
 		self.client.publish(TOPIC, msg)	
 	
 \end{lstlisting}
+
+
+\subsection{File: \texttt{KeyPad.py}}
+\begin{lstlisting}[language=Python, caption={Questa classe gestisce il tastierino utilizzato e fornisce alcuni metodi di lettura. Il costruttore inizializza la mappa dei pulsanti del tastierino sottoforma di matrice. Poi inizializza i pin di input (relativi alle 4 righe del tastierino) e i pin di output (relativi alle 4 colonne del tastierino). Il metodo scan() serve per identificare quale tasto è premuto. Scorre tutte le colonne impostandole a 0 una alla volta; va poi a scorrere ogni riga: se il valore è 0 significa che c'è un contatto in quella riga e quella colonna. È presente il controllo sul debounce di 50ms. Il metodo lettura() rende la lettura dei tasti affidabile evitando che, tenendo premuto un tasto, questo venga letto più volte. Il metodo letturaPin() serve a leggere un pin lungo 4 caratteri di default.}]	
+class KeyPad:
+
+	""" Costruttore """
+	def __init__(self, in1, in2, in3, in4, out1, out2, out3 , out4):
+	
+		""" Mappa dei tasti: righe per colonne """
+		self.KEY_MAP = [
+		['1','2','3','A'],
+		['4','5','6','B'],
+		['7','8','9','C'],
+		['*','0','#','D']
+		]
+	
+		""" Definizione dei pin usati """
+		self.rowPins = [Pin(p, Pin.IN, Pin.PULL_UP) for p in [in1, in2, in3, in4]]
+		self.colPins = [Pin(p, Pin.OUT) for p in [out1, out2, out3, out4]]
+	
+	
+	""" Scan del tasto premuto """
+	def scan(self):
+		for colNum, col in enumerate(self.colPins):
+			""" Tutte le colonne a 1 tranne una (col) """
+			for c in self.colPins:
+				c.value(1)
+			col.value(0)
+	
+			for rowNum, row in enumerate(self.rowPins):
+				if row.value() == 0:
+					time.sleep_ms(50)  # Si evita il debounce
+					if row.value() == 0:  # verifica di nuovo
+						return self.KEY_MAP[rowNum][colNum]
+		return None
+	
+	""" Lettura attiva del tasto premuto """
+	def lettura(self):
+		key = self.scan()
+		if key:
+			#print('Hai premuto: ', key, ' di tipo: ', type(key))
+			while self.scan() == key:
+				time.sleep_ms(20)
+			time.sleep_ms(50)
+		return key
+	
+	def letturaPin(self, oled, pos, num=4):
+		password = ''
+		
+		for i in range(num):
+			key = self.lettura()
+			while key == None:
+				key = self.lettura()
+			password = password + key
+			#print('Hai premuto',key)
+			pos = oled.write(pos[0],pos[1],0,' * ',clean=False)
+			oled.show()
+		
+		return password
+
+\end{lstlisting}
+
 
 \end{document}
