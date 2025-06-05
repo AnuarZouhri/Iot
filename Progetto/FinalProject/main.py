@@ -52,13 +52,10 @@ def stopBuzzer(pin):
         
 """Callback handler"""
 def sub_callback_handler(topic,msg):
-        global stato, SUB_TOPICS, pin, mqtt, openDoor, flagBuzzer, pinRemote, correctPin, handler
-        if topic == SUB_TOPICS[0]:
-            message=ujson.loads(msg)
-            if 'wrong' in message and message['wrong']==1:
-                stato = STATO_SBLOCCATO
+        global stato, openDoor, flagBuzzer, pinRemote, correctPin
+        
                 
-        elif topic == SUB_TOPICS[1]:
+        if topic == SUB_TOPICS[1]:
             sv.closeDoor()
             mutex.lock()
             oled.writeLogo()
@@ -77,12 +74,12 @@ def sub_callback_handler(topic,msg):
                     mqtt.publish(SUB_TOPICS[8], mm.Msg())
                     mutex.lock()
                 else:
-                    mqtt.publish(SUB_TOPICS[7], mm.Msg("wrong",0))
+                    mqtt.publish(SUB_TOPICS[6], mm.Msg("wrong",0))
             else:
                 if pin.checkPassword(password):
                     stato = STATO_SBLOCCATO
                 else:
-                    mqtt.publish(SUB_TOPICS[7], mm.Msg("wrong",0))
+                    mqtt.publish(SUB_TOPICS[6], mm.Msg("wrong",0))
 
             
         elif topic == SUB_TOPICS[12]:
