@@ -13,9 +13,10 @@ from mutex import Mutex
 from buzzer_class import BUZZER
 from MessageMaker import MM
 import ujson
+import json
 
 
-""" Metodo richiamato quando si preme il pulsante di chiusura della porta """
+""" Metodo richiamato quando si preme il pulsante di chiusura della porta."""
 def closeDoor(pin):
     global last_press_time, stato, openDoor
     
@@ -31,7 +32,8 @@ def closeDoor(pin):
         oled.show()
         sleep(0.75)
         openDoor = False
-        mqtt.publish(SUB_TOPICS[0], mm.statusDoor(0))
+        if was_connected_MQTT and wifi.isconnected():
+            mqtt.publish(SUB_TOPICS[0], mm.statusDoor(0))
         stato = STATO_VISTA_MENU
         
         
@@ -46,33 +48,11 @@ def stopBuzzer(pin):
     
     if stato==STATO_ALLARME:
         flagBuzzer=True
-      
-      
-""" Controlla se i valori di temperatura ed umidità superano una certa soglia """
-def checkTempHum(values):
-    global stato, tempAllarm, humAllarm
-    temp=values['Temperature']
-    hum=values['Humidity']
-    if temp is not None and temp>50:
-        tempAllarm=True
-        stato=STATO_ALLARME
-    elif hum is not None and (hum < 20 or hum > 70):
-        humAllarm=True
-        stato=STATO_ALLARME
-
-
-""" Controlla se la distanza rilevata dal sensore ad ultrasuoni supera una certa soglia """
-def checkDistance():
-    global stato, standardDistance, distanceAllarm
-    d=hcsr04.distanceCm()
-    if d<standardDistance and stato!=STATO_SBLOCCATO:
-        distanceAllarm=True
-        stato=STATO_ALLARME
         
         
 """Callback handler"""
 def sub_callback_handler(topic,msg):
-        global stato, SUB_TOPICS, pin, mqtt, openDoor, flagBuzzer, pinRemote, correctPin
+        global stato, SUB_TOPICS, pin, mqtt, openDoor, flagBuzzer, pinRemote, correctPin, handler
         if topic == SUB_TOPICS[0]:
             message=ujson.loads(msg)
             if 'wrong' in message and message['wrong']==1:
@@ -94,24 +74,37 @@ def sub_callback_handler(topic,msg):
                 if pin.checkPassword(password):
                     stato=STATO_VISTA_MENU
                     correctPin=True
-                    mqtt.publish(SUB_TOPICS[8], mm.correctPinMsg())
+                    mqtt.publish(SUB_TOPICS[8], mm.Msg())
                     mutex.lock()
                 else:
-                    mqtt.publish(SUB_TOPICS[7], mm.wrongPinMsg())
+                    mqtt.publish(SUB_TOPICS[7], mm.Msg("wrong",0))
             else:
                 if pin.checkPassword(password):
                     stato = STATO_SBLOCCATO
                 else:
-                    mqtt.publish(SUB_TOPICS[7], mm.wrongPinMsg())
-                    
-        elif topic == SUB_TOPICS[10]:
-            mqtt.publish(SUB_TOPICS[11], mm.correctPinMsg())
+                    mqtt.publish(SUB_TOPICS[7], mm.Msg("wrong",0))
+
             
         elif topic == SUB_TOPICS[12]:
             if stato==STATO_ALLARME:
                 flagBuzzer=True
                 pinRemote=True
+                print(flagBuzzer,pinRemote)
+                
+        elif topic == SUB_TOPICS[13]:
+            dati = json.loads(msg.decode('utf-8')) 
+            nuovaSogliaTemp = float(dati["Temperatura"])
+            handler.setSogliaTemp(nuovaSogliaTemp)
             
+        elif topic == SUB_TOPICS[14]:
+            dati = json.loads(msg.decode('utf-8')) 
+            nuovaSogliaHum = float(dati["Umidita"])
+            handler.setSogliaHum(nuovaSogliaHum)
+            
+        elif topic == SUB_TOPICS[15]:
+            dati = json.loads(msg.decode('utf-8')) 
+            nuovaSogliaDis = float(dati["Distanza"])
+            handler.setSogliaDis(nuovaSogliaDis)
                 
 
 """ Stati principali """
@@ -144,7 +137,7 @@ button.irq(trigger=Pin.IRQ_RISING, handler=closeDoor)
 """Altri oggetti utili"""
 wifi = WiFi('Galaxy A5173BB', 'aaaaaaab')
 mqtt = MQTT(sub_callback_handler)
-handler = SensorHandler(dht22)
+handler = SensorHandler(dht22, hcsr04)
 mm = MM()
 pin = Password()
 values = []
@@ -160,15 +153,19 @@ pinRemote=False
 correctPin=False
 last_press_time_buzzer=0
 last_press_time = 0
-standardDistance=10
 i=1
 
 
 
-""" Definizione stato corrente """
+""" Definizione stato iniziale"""
 stato = -1
 was_connected_MQTT = 0
 SUB_TOPICS = mqtt.getSUB_TOPICS()
+mutex.lock()
+sv.closeDoor()
+oled.writeLogo()
+oled.show()
+sleep(0.5)
 
 
 
@@ -179,28 +176,35 @@ else:
     stato = STATO_CONFIGURAZIONE_WIFI
 
 
-""" Stato iniziale """
-mutex.lock()
-sv.closeDoor()
-oled.writeLogo()
-oled.show()
-sleep(0.5)
 
 
 while True:
     
-    values = handler.read()
-    checkTempHum(values)
-    checkDistance()
+    
+    values = handler.readDht22()
+    handlerCheck = handler.checkTempHum(values['Temperature'], values['Humidity'])
+    
+    if handlerCheck==1:
+        tempAllarm=True
+        stato=STATO_ALLARME
+    elif handlerCheck==2:
+        humAllarm=True
+        stato=STATO_ALLARME  
+    elif handler.checkDistance() and stato!=STATO_SBLOCCATO:
+        distanceAllarm=True
+        stato=STATO_ALLARME    
     
     was_connected_MQTT = mqtt.checkAndRead_msg(wifi, was_connected_MQTT, values)
+    
+    if was_connected_MQTT == 1 and wifi.isconnected():
+        mqtt.publish(SUB_TOPICS[11], mm.Msg())
     
     if stato == STATO_CONFIGURAZIONE_PIN:
         sv.closeDoor()
         
         if not pin.fileExists():
-            pos = oled.write(1, 1, 0, 'Per registrarti,\n')
-            pos = oled.write(pos[0], pos[1], 0,'inserire il pin!\n', clean=False)
+            pos = oled.write(1, 1, 0, 'Prima accensionedel caveau.\n')
+            pos = oled.write(pos[0], pos[1], 0,'Creare un pin!\n', clean=False)
             oled.show()
         else:
             oled.write(1, 1, 0, 'Inserisci il\nnuovo pin:\n')
@@ -215,6 +219,7 @@ while True:
             stato = STATO_VISTA_MENU
         else:
             stato=STATO_CONFIGURAZIONE_WIFI
+
 
     elif stato == STATO_CONFIGURAZIONE_WIFI:
         if firstRegistration:
@@ -250,7 +255,7 @@ while True:
         try:
             mqtt.connect()
             mqtt.subscribes()
-            mqtt.publish(SUB_TOPICS[11], mm.correctPinMsg())
+            mqtt.publish(SUB_TOPICS[11], mm.Msg())
             mqtt.publish(SUB_TOPICS[0], mm.statusDoor(0))
             was_connected_MQTT = 1
             oled.write(1,1,0,'Connessione MQTT riuscita!')
@@ -285,7 +290,9 @@ while True:
         while key == None and ticks_diff(ticks_ms(), start_time) < timeout and stato != STATO_ALLARME:
             was_connected_MQTT = mqtt.checkAndRead_msg(wifi, was_connected_MQTT, values)
             key = pad.lettura()
-            checkDistance()
+            if handler.checkDistance() and stato!=STATO_SBLOCCATO:
+                distanceAllarm=True
+                stato=STATO_ALLARME
        
         if key == '1':
             stato = STATO_INSERIMENTO_PIN
@@ -319,7 +326,7 @@ while True:
             cont = cont + 1
             if pin.checkPassword(password):
                 flag = True
-                oled.write(1, 1, 0, 'Pin corretto:)')
+                oled.write(1, 1, 0, 'Pin corretto')
                 oled.show()
                 sleep(0.5)
             elif cont<3:
@@ -342,7 +349,7 @@ while True:
                 stato = STATO_SBLOCCATO
             
     elif stato == STATO_SBLOCCATO:
-        if openDoor==False:
+        if openDoor==False and was_connected_MQTT and wifi.isconnected():
             mqtt.publish(SUB_TOPICS[0], mm.statusDoor(1))
             oled.writeLogoUnlock()
             oled.show()
@@ -357,21 +364,25 @@ while True:
 
     elif stato == STATO_ALLARME:
         if tempAllarm:
-            oled.write(1, 1, 0, 'ALLARME\nTemperatura anomala')
+            oled.write(1, 1, 0, 'ALLARME\nTemperatura troppo\nelevata')
+            if was_connected_MQTT and wifi.isconnected() :
+                mqtt.publish(SUB_TOPICS[16], mm.Msg("Temperature",values["Temperature"]), qos = 1)
         elif humAllarm:
             oled.write(1, 1, 0, 'ALLARME\nValore di\numidita anomalo')
+            if was_connected_MQTT and wifi.isconnected() :
+                mqtt.publish(SUB_TOPICS[17], mm.Msg("Humidity",values["Humidity"]), qos = 1)
         elif distanceAllarm:
             oled.write(1, 1, 0, 'ALLARME\nIntrusione')
             if was_connected_MQTT and wifi.isconnected():
-                mqtt.publish(SUB_TOPICS[7], mm.correctPinMsg())
+                mqtt.publish(SUB_TOPICS[7], mm.Msg(), qos = 1)
         elif wrongPinAllarm:
             oled.write(1, 1, 0, 'ALLARME\nPin errato')
             if was_connected_MQTT and wifi.isconnected() :
-                mqtt.publish(SUB_TOPICS[9], mm.correctPinMsg())
+                mqtt.publish(SUB_TOPICS[9], mm.Msg(), qos = 1)
         oled.show()
         while not flagBuzzer:
             mutex.alarm()
-            buzzer.play([330], 1000, 512)
+            buzzer.play([900], 1500, 512)
             was_connected_MQTT = mqtt.checkAndRead_msg(wifi, was_connected_MQTT, values)
         flagBuzzer=False
         
@@ -386,7 +397,7 @@ while True:
                 distanceAllarm=False
                 wrongPinAllarm=False
                 if was_connected_MQTT:
-                    mqtt.publish(SUB_TOPICS[8], mm.correctPinMsg())
+                    mqtt.publish(SUB_TOPICS[8], mm.Msg())
                 mutex.lock()
             else:
                 oled.write(1, 1, 0, 'Pin errato')
@@ -396,8 +407,12 @@ while True:
             oled.show()
             while not correctPin:
                 was_connected_MQTT = mqtt.checkAndRead_msg(wifi, was_connected_MQTT, values)
+            tempAllarm=False
+            humAllarm=False
+            distanceAllarm=False
+            wrongPinAllarm=False
         correctPin=False
         pinRemote=False
-        
-
+     
+    sleep(0.1)
 

@@ -1,0 +1,2202 @@
+[
+    {
+        "id": "13696d24289be925",
+        "type": "tab",
+        "label": "Flow 1",
+        "disabled": false,
+        "info": "",
+        "env": []
+    },
+    {
+        "id": "2184e8fd5ee47d36",
+        "type": "tab",
+        "label": "Dashboard",
+        "disabled": false,
+        "info": "",
+        "env": []
+    },
+    {
+        "id": "68b44061.6de018",
+        "type": "tab",
+        "label": "InsertPin",
+        "disabled": false,
+        "info": ""
+    },
+    {
+        "id": "000d03fa2fe6636f",
+        "type": "tab",
+        "label": "Flow 2",
+        "disabled": false,
+        "info": "",
+        "env": []
+    },
+    {
+        "id": "20089d4e939595c6",
+        "type": "tab",
+        "label": "TemperatureHumidity",
+        "disabled": false,
+        "info": "",
+        "env": []
+    },
+    {
+        "id": "57f672d6f718c74e",
+        "type": "tab",
+        "label": "Notifiche",
+        "disabled": false,
+        "info": "",
+        "env": []
+    },
+    {
+        "id": "4dc030bccc4da472",
+        "type": "tab",
+        "label": "Flow 4",
+        "disabled": false,
+        "info": "",
+        "env": []
+    },
+    {
+        "id": "8ca0c3b43f78e2e0",
+        "type": "mqtt-broker",
+        "name": "",
+        "broker": "mosquitto",
+        "port": 1883,
+        "clientid": "",
+        "autoConnect": true,
+        "usetls": false,
+        "protocolVersion": 4,
+        "keepalive": 60,
+        "cleansession": true,
+        "autoUnsubscribe": true,
+        "birthTopic": "",
+        "birthQos": "0",
+        "birthRetain": "false",
+        "birthPayload": "",
+        "birthMsg": {},
+        "closeTopic": "",
+        "closeQos": "0",
+        "closeRetain": "false",
+        "closePayload": "",
+        "closeMsg": {},
+        "willTopic": "",
+        "willQos": "0",
+        "willRetain": "false",
+        "willPayload": "",
+        "willMsg": {},
+        "userProps": "",
+        "sessionExpiry": ""
+    },
+    {
+        "id": "aad5992b35bd6795",
+        "type": "ui_base",
+        "theme": {
+            "name": "theme-light",
+            "lightTheme": {
+                "default": "#0094CE",
+                "baseColor": "#0094CE",
+                "baseFont": "-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Oxygen-Sans,Ubuntu,Cantarell,Helvetica Neue,sans-serif",
+                "edited": true,
+                "reset": false
+            },
+            "darkTheme": {
+                "default": "#097479",
+                "baseColor": "#097479",
+                "baseFont": "-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Oxygen-Sans,Ubuntu,Cantarell,Helvetica Neue,sans-serif",
+                "edited": true,
+                "reset": false
+            },
+            "customTheme": {
+                "name": "Untitled Theme 1",
+                "default": "#4B7930",
+                "baseColor": "#4B7930",
+                "baseFont": "-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Oxygen-Sans,Ubuntu,Cantarell,Helvetica Neue,sans-serif"
+            },
+            "themeState": {
+                "base-color": {
+                    "default": "#0094CE",
+                    "value": "#0094CE",
+                    "edited": false
+                },
+                "page-titlebar-backgroundColor": {
+                    "value": "#0094CE",
+                    "edited": false
+                },
+                "page-backgroundColor": {
+                    "value": "#fafafa",
+                    "edited": false
+                },
+                "page-sidebar-backgroundColor": {
+                    "value": "#ffffff",
+                    "edited": false
+                },
+                "group-textColor": {
+                    "value": "#1bbfff",
+                    "edited": false
+                },
+                "group-borderColor": {
+                    "value": "#ffffff",
+                    "edited": false
+                },
+                "group-backgroundColor": {
+                    "value": "#ffffff",
+                    "edited": false
+                },
+                "widget-textColor": {
+                    "value": "#111111",
+                    "edited": false
+                },
+                "widget-backgroundColor": {
+                    "value": "#0094ce",
+                    "edited": false
+                },
+                "widget-borderColor": {
+                    "value": "#ffffff",
+                    "edited": false
+                },
+                "base-font": {
+                    "value": "-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Oxygen-Sans,Ubuntu,Cantarell,Helvetica Neue,sans-serif"
+                }
+            },
+            "angularTheme": {
+                "primary": "indigo",
+                "accents": "blue",
+                "warn": "red",
+                "background": "grey",
+                "palette": "light"
+            }
+        },
+        "site": {
+            "name": "Node-RED Dashboard",
+            "hideToolbar": "false",
+            "allowSwipe": "false",
+            "lockMenu": "false",
+            "allowTempTheme": "true",
+            "dateFormat": "DD/MM/YYYY",
+            "sizes": {
+                "sx": 48,
+                "sy": 48,
+                "gx": 6,
+                "gy": 6,
+                "cx": 6,
+                "cy": 6,
+                "px": 0,
+                "py": 0
+            }
+        }
+    },
+    {
+        "id": "17f14586ff7a33a8",
+        "type": "ui_group",
+        "name": "Group 1",
+        "tab": "",
+        "order": 1,
+        "disp": true,
+        "width": 6
+    },
+    {
+        "id": "a1e95e9e.580868",
+        "type": "ui_tab",
+        "name": "Access",
+        "icon": "dashboard",
+        "order": 3,
+        "disabled": false,
+        "hidden": false
+    },
+    {
+        "id": "6293e9bc.df8968",
+        "type": "ui_group",
+        "name": "Numbers",
+        "tab": "a1e95e9e.580868",
+        "order": 1,
+        "disp": false,
+        "width": "4",
+        "collapse": false,
+        "className": ""
+    },
+    {
+        "id": "f8cabd93473ac1d6",
+        "type": "ui_group",
+        "name": "Group 1",
+        "tab": "",
+        "order": 1,
+        "disp": true,
+        "width": 6
+    },
+    {
+        "id": "08e2e70c9a6a1f9a",
+        "type": "ui_group",
+        "name": "Group 2",
+        "tab": "",
+        "order": 2,
+        "disp": true,
+        "width": 6
+    },
+    {
+        "id": "2f3b331f714aa86e",
+        "type": "ui_group",
+        "name": "Group 3",
+        "tab": "",
+        "order": 3,
+        "disp": true,
+        "width": 6
+    },
+    {
+        "id": "61acb53eb83acc3c",
+        "type": "ui_group",
+        "name": "Letters",
+        "tab": "a1e95e9e.580868",
+        "order": 2,
+        "disp": false,
+        "width": "1",
+        "collapse": false,
+        "className": ""
+    },
+    {
+        "id": "535618a02fc8567f",
+        "type": "ui_tab",
+        "name": "Parametri",
+        "icon": "dashboard",
+        "order": 2,
+        "disabled": false,
+        "hidden": false
+    },
+    {
+        "id": "2cebf75e2e195924",
+        "type": "ui_group",
+        "name": "Gauges",
+        "tab": "535618a02fc8567f",
+        "order": 3,
+        "disp": false,
+        "width": "12",
+        "collapse": false,
+        "className": ""
+    },
+    {
+        "id": "b431dbfe4ca272fc",
+        "type": "ui_group",
+        "name": "Storico",
+        "tab": "535618a02fc8567f",
+        "order": 1,
+        "disp": false,
+        "width": 6,
+        "collapse": false,
+        "className": ""
+    },
+    {
+        "id": "e4f1fbaeabc4604e",
+        "type": "ui_group",
+        "name": "Insert",
+        "tab": "a1e95e9e.580868",
+        "order": 3,
+        "disp": false,
+        "width": "2",
+        "collapse": false,
+        "className": ""
+    },
+    {
+        "id": "71a5bcd9d543766c",
+        "type": "ui_group",
+        "name": "Caveau aperto",
+        "tab": "a1e95e9e.580868",
+        "order": 4,
+        "disp": true,
+        "width": "4",
+        "collapse": false,
+        "className": ""
+    },
+    {
+        "id": "mqtt_broker",
+        "type": "mqtt-broker",
+        "name": "MQTT Broker",
+        "broker": "localhost",
+        "port": "1883",
+        "clientid": "",
+        "usetls": false,
+        "protocolVersion": "4",
+        "keepalive": "60",
+        "cleansession": true,
+        "birthTopic": "",
+        "birthQos": "0",
+        "birthPayload": "",
+        "closeTopic": "",
+        "closePayload": "",
+        "willTopic": "",
+        "willQos": "0",
+        "willPayload": ""
+    },
+    {
+        "id": "805d14b576e4b149",
+        "type": "ui_group",
+        "name": "",
+        "tab": "535618a02fc8567f",
+        "order": 2,
+        "disp": true,
+        "width": "9",
+        "collapse": false,
+        "className": ""
+    },
+    {
+        "id": "dc59eaef.1681c",
+        "type": "ui_button",
+        "z": "68b44061.6de018",
+        "name": "",
+        "group": "6293e9bc.df8968",
+        "order": 1,
+        "width": "1",
+        "height": "1",
+        "passthru": false,
+        "label": "1",
+        "tooltip": "",
+        "color": "",
+        "bgcolor": "",
+        "className": "",
+        "icon": "",
+        "payload": "1",
+        "payloadType": "num",
+        "topic": "keyboard",
+        "topicType": "str",
+        "x": 270,
+        "y": 40,
+        "wires": [
+            [
+                "e9f291d1.a4dfe"
+            ]
+        ]
+    },
+    {
+        "id": "e9f291d1.a4dfe",
+        "type": "function",
+        "z": "68b44061.6de018",
+        "name": "",
+        "func": "if (msg.payload ===\"x\") {\n    flow.set(\"numbers\", \"\");\n    return {};\n}else{\n    var hold = (flow.get(\"numbers\") || \"\") + msg.payload;\n    flow.set(\"numbers\", hold);\n    msg.payload = hold;\n    return msg;\n}",
+        "outputs": 1,
+        "timeout": "",
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 520,
+        "y": 340,
+        "wires": [
+            [
+                "6fa1a7d0dec816d9",
+                "e665411536a2ef96"
+            ]
+        ]
+    },
+    {
+        "id": "86a05172.0ecfb8",
+        "type": "ui_button",
+        "z": "68b44061.6de018",
+        "name": "",
+        "group": "6293e9bc.df8968",
+        "order": 2,
+        "width": "1",
+        "height": "1",
+        "passthru": false,
+        "label": "2",
+        "tooltip": "",
+        "color": "",
+        "bgcolor": "",
+        "className": "",
+        "icon": "",
+        "payload": "2",
+        "payloadType": "num",
+        "topic": "keyboard",
+        "topicType": "str",
+        "x": 270,
+        "y": 80,
+        "wires": [
+            [
+                "e9f291d1.a4dfe"
+            ]
+        ]
+    },
+    {
+        "id": "c3693577.392be8",
+        "type": "ui_button",
+        "z": "68b44061.6de018",
+        "name": "",
+        "group": "6293e9bc.df8968",
+        "order": 3,
+        "width": "1",
+        "height": "1",
+        "passthru": false,
+        "label": "3",
+        "tooltip": "",
+        "color": "",
+        "bgcolor": "",
+        "className": "",
+        "icon": "",
+        "payload": "3",
+        "payloadType": "num",
+        "topic": "keyboard",
+        "topicType": "str",
+        "x": 270,
+        "y": 120,
+        "wires": [
+            [
+                "e9f291d1.a4dfe"
+            ]
+        ]
+    },
+    {
+        "id": "f4284afd.2a835",
+        "type": "ui_button",
+        "z": "68b44061.6de018",
+        "name": "",
+        "group": "6293e9bc.df8968",
+        "order": 20,
+        "width": "4",
+        "height": "1",
+        "passthru": false,
+        "label": "CANC",
+        "tooltip": "",
+        "color": "",
+        "bgcolor": "",
+        "className": "",
+        "icon": "",
+        "payload": "x",
+        "payloadType": "str",
+        "topic": "keyboard",
+        "topicType": "str",
+        "x": 270,
+        "y": 440,
+        "wires": [
+            [
+                "e9f291d1.a4dfe"
+            ]
+        ]
+    },
+    {
+        "id": "6ca8e1d0.6153b8",
+        "type": "ui_text",
+        "z": "68b44061.6de018",
+        "group": "6293e9bc.df8968",
+        "order": 17,
+        "width": "4",
+        "height": "1",
+        "name": "",
+        "label": "",
+        "format": "{{msg.payload}}",
+        "layout": "row-spread",
+        "className": "",
+        "style": false,
+        "font": "",
+        "fontSize": "",
+        "color": "#000000",
+        "x": 830,
+        "y": 140,
+        "wires": []
+    },
+    {
+        "id": "d8e44361bf1616c2",
+        "type": "ui_button",
+        "z": "68b44061.6de018",
+        "name": "",
+        "group": "6293e9bc.df8968",
+        "order": 6,
+        "width": "1",
+        "height": "1",
+        "passthru": false,
+        "label": "5",
+        "tooltip": "",
+        "color": "",
+        "bgcolor": "",
+        "className": "",
+        "icon": "",
+        "payload": "5",
+        "payloadType": "num",
+        "topic": "keyboard",
+        "topicType": "str",
+        "x": 270,
+        "y": 200,
+        "wires": [
+            [
+                "e9f291d1.a4dfe"
+            ]
+        ]
+    },
+    {
+        "id": "dee3215da311a0f9",
+        "type": "ui_button",
+        "z": "68b44061.6de018",
+        "name": "",
+        "group": "6293e9bc.df8968",
+        "order": 5,
+        "width": "1",
+        "height": "1",
+        "passthru": false,
+        "label": "4",
+        "tooltip": "",
+        "color": "",
+        "bgcolor": "",
+        "className": "",
+        "icon": "",
+        "payload": "4",
+        "payloadType": "num",
+        "topic": "keyboard",
+        "topicType": "str",
+        "x": 270,
+        "y": 160,
+        "wires": [
+            [
+                "e9f291d1.a4dfe"
+            ]
+        ]
+    },
+    {
+        "id": "acff878dbb3c82ff",
+        "type": "ui_button",
+        "z": "68b44061.6de018",
+        "name": "",
+        "group": "6293e9bc.df8968",
+        "order": 7,
+        "width": "1",
+        "height": "1",
+        "passthru": false,
+        "label": "6",
+        "tooltip": "",
+        "color": "",
+        "bgcolor": "",
+        "className": "",
+        "icon": "",
+        "payload": "6",
+        "payloadType": "num",
+        "topic": "keyboard",
+        "topicType": "str",
+        "x": 270,
+        "y": 240,
+        "wires": [
+            [
+                "e9f291d1.a4dfe"
+            ]
+        ]
+    },
+    {
+        "id": "507219484552bc09",
+        "type": "ui_button",
+        "z": "68b44061.6de018",
+        "name": "",
+        "group": "6293e9bc.df8968",
+        "order": 9,
+        "width": "1",
+        "height": "1",
+        "passthru": false,
+        "label": "7",
+        "tooltip": "",
+        "color": "",
+        "bgcolor": "",
+        "className": "",
+        "icon": "",
+        "payload": "7",
+        "payloadType": "num",
+        "topic": "keyboard",
+        "topicType": "str",
+        "x": 270,
+        "y": 280,
+        "wires": [
+            [
+                "e9f291d1.a4dfe"
+            ]
+        ]
+    },
+    {
+        "id": "e0025425ee952a3b",
+        "type": "ui_button",
+        "z": "68b44061.6de018",
+        "name": "",
+        "group": "6293e9bc.df8968",
+        "order": 10,
+        "width": "1",
+        "height": "1",
+        "passthru": false,
+        "label": "8",
+        "tooltip": "",
+        "color": "",
+        "bgcolor": "",
+        "className": "",
+        "icon": "",
+        "payload": "8",
+        "payloadType": "num",
+        "topic": "keyboard",
+        "topicType": "str",
+        "x": 270,
+        "y": 320,
+        "wires": [
+            [
+                "e9f291d1.a4dfe"
+            ]
+        ]
+    },
+    {
+        "id": "dbbdf75733eb8c1e",
+        "type": "ui_button",
+        "z": "68b44061.6de018",
+        "name": "",
+        "group": "6293e9bc.df8968",
+        "order": 11,
+        "width": "1",
+        "height": "1",
+        "passthru": false,
+        "label": "9",
+        "tooltip": "",
+        "color": "",
+        "bgcolor": "",
+        "className": "",
+        "icon": "",
+        "payload": "9",
+        "payloadType": "num",
+        "topic": "keyboard",
+        "topicType": "str",
+        "x": 270,
+        "y": 360,
+        "wires": [
+            [
+                "e9f291d1.a4dfe"
+            ]
+        ]
+    },
+    {
+        "id": "d084ec86af846f00",
+        "type": "ui_button",
+        "z": "68b44061.6de018",
+        "name": "",
+        "group": "6293e9bc.df8968",
+        "order": 14,
+        "width": "1",
+        "height": "1",
+        "passthru": false,
+        "label": "0",
+        "tooltip": "",
+        "color": "",
+        "bgcolor": "",
+        "className": "",
+        "icon": "",
+        "payload": "0",
+        "payloadType": "num",
+        "topic": "keyboard",
+        "topicType": "str",
+        "x": 270,
+        "y": 400,
+        "wires": [
+            [
+                "e9f291d1.a4dfe"
+            ]
+        ]
+    },
+    {
+        "id": "e665411536a2ef96",
+        "type": "ui_button",
+        "z": "68b44061.6de018",
+        "name": "",
+        "group": "6293e9bc.df8968",
+        "order": 18,
+        "width": "2",
+        "height": "1",
+        "passthru": false,
+        "label": "Open",
+        "tooltip": "",
+        "color": "",
+        "bgcolor": "",
+        "className": "",
+        "icon": "",
+        "payload": "numbers",
+        "payloadType": "flow",
+        "topic": "topic",
+        "topicType": "msg",
+        "x": 670,
+        "y": 340,
+        "wires": [
+            [
+                "13683d617a55f29f"
+            ]
+        ]
+    },
+    {
+        "id": "6fa1a7d0dec816d9",
+        "type": "function",
+        "z": "68b44061.6de018",
+        "name": "hide",
+        "func": "let stored = flow.get(\"numbers\") || \"\";\nmsg.payload = \"*\".repeat(stored.length);\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 670,
+        "y": 140,
+        "wires": [
+            [
+                "6ca8e1d0.6153b8"
+            ]
+        ]
+    },
+    {
+        "id": "e5f40661c8984d01",
+        "type": "ui_button",
+        "z": "68b44061.6de018",
+        "name": "",
+        "group": "6293e9bc.df8968",
+        "order": 4,
+        "width": "1",
+        "height": "1",
+        "passthru": false,
+        "label": "A",
+        "tooltip": "",
+        "color": "",
+        "bgcolor": "",
+        "className": "",
+        "icon": "",
+        "payload": "A",
+        "payloadType": "str",
+        "topic": "topic",
+        "topicType": "msg",
+        "x": 270,
+        "y": 480,
+        "wires": [
+            [
+                "e9f291d1.a4dfe"
+            ]
+        ]
+    },
+    {
+        "id": "dbb2af7cdb1091cd",
+        "type": "ui_button",
+        "z": "68b44061.6de018",
+        "name": "",
+        "group": "6293e9bc.df8968",
+        "order": 8,
+        "width": "1",
+        "height": "1",
+        "passthru": false,
+        "label": "B",
+        "tooltip": "",
+        "color": "",
+        "bgcolor": "",
+        "className": "",
+        "icon": "",
+        "payload": "B",
+        "payloadType": "str",
+        "topic": "topic",
+        "topicType": "msg",
+        "x": 270,
+        "y": 520,
+        "wires": [
+            [
+                "e9f291d1.a4dfe"
+            ]
+        ]
+    },
+    {
+        "id": "8aeb413a48598a79",
+        "type": "ui_button",
+        "z": "68b44061.6de018",
+        "name": "",
+        "group": "6293e9bc.df8968",
+        "order": 12,
+        "width": "1",
+        "height": "1",
+        "passthru": false,
+        "label": "C",
+        "tooltip": "",
+        "color": "",
+        "bgcolor": "",
+        "className": "",
+        "icon": "",
+        "payload": "C",
+        "payloadType": "str",
+        "topic": "topic",
+        "topicType": "msg",
+        "x": 270,
+        "y": 560,
+        "wires": [
+            [
+                "e9f291d1.a4dfe"
+            ]
+        ]
+    },
+    {
+        "id": "a20dc8c2c4aaf498",
+        "type": "ui_button",
+        "z": "68b44061.6de018",
+        "name": "",
+        "group": "6293e9bc.df8968",
+        "order": 16,
+        "width": "1",
+        "height": "1",
+        "passthru": false,
+        "label": "D",
+        "tooltip": "",
+        "color": "",
+        "bgcolor": "",
+        "className": "",
+        "icon": "",
+        "payload": "D",
+        "payloadType": "str",
+        "topic": "topic",
+        "topicType": "msg",
+        "x": 270,
+        "y": 600,
+        "wires": [
+            [
+                "e9f291d1.a4dfe"
+            ]
+        ]
+    },
+    {
+        "id": "64fd9947d7e10c6b",
+        "type": "ui_button",
+        "z": "68b44061.6de018",
+        "name": "",
+        "group": "6293e9bc.df8968",
+        "order": 13,
+        "width": "1",
+        "height": "1",
+        "passthru": false,
+        "label": "*",
+        "tooltip": "",
+        "color": "",
+        "bgcolor": "",
+        "className": "",
+        "icon": "",
+        "payload": "*",
+        "payloadType": "str",
+        "topic": "topic",
+        "topicType": "msg",
+        "x": 270,
+        "y": 640,
+        "wires": [
+            [
+                "e9f291d1.a4dfe"
+            ]
+        ]
+    },
+    {
+        "id": "24573ed20a80d942",
+        "type": "ui_button",
+        "z": "68b44061.6de018",
+        "name": "",
+        "group": "6293e9bc.df8968",
+        "order": 15,
+        "width": "1",
+        "height": "1",
+        "passthru": false,
+        "label": "#",
+        "tooltip": "",
+        "color": "",
+        "bgcolor": "",
+        "className": "",
+        "icon": "",
+        "payload": "#",
+        "payloadType": "str",
+        "topic": "topic",
+        "topicType": "msg",
+        "x": 270,
+        "y": 680,
+        "wires": [
+            [
+                "e9f291d1.a4dfe"
+            ]
+        ]
+    },
+    {
+        "id": "13683d617a55f29f",
+        "type": "mqtt out",
+        "z": "68b44061.6de018",
+        "name": "",
+        "topic": "TheBox/Pin",
+        "qos": "",
+        "retain": "",
+        "respTopic": "",
+        "contentType": "",
+        "userProps": "",
+        "correl": "",
+        "expiry": "",
+        "broker": "8ca0c3b43f78e2e0",
+        "x": 870,
+        "y": 400,
+        "wires": []
+    },
+    {
+        "id": "a41a3f28c64e61fd",
+        "type": "mqtt in",
+        "z": "68b44061.6de018",
+        "name": "",
+        "topic": "TheBox/Pin",
+        "qos": "2",
+        "datatype": "auto-detect",
+        "broker": "8ca0c3b43f78e2e0",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 570,
+        "y": 440,
+        "wires": [
+            [
+                "0b6948a94b3b8f21"
+            ]
+        ]
+    },
+    {
+        "id": "a3987ff02e619895",
+        "type": "ui_button",
+        "z": "68b44061.6de018",
+        "name": "",
+        "group": "6293e9bc.df8968",
+        "order": 19,
+        "width": "2",
+        "height": "1",
+        "passthru": false,
+        "label": "Close",
+        "tooltip": "",
+        "color": "",
+        "bgcolor": "",
+        "className": "",
+        "icon": "",
+        "payload": "",
+        "payloadType": "num",
+        "topic": "topic",
+        "topicType": "msg",
+        "x": 270,
+        "y": 740,
+        "wires": [
+            [
+                "1fbc185d6a2863f9"
+            ]
+        ]
+    },
+    {
+        "id": "1fbc185d6a2863f9",
+        "type": "mqtt out",
+        "z": "68b44061.6de018",
+        "name": "",
+        "topic": "TheBox/CloseCaveaux",
+        "qos": "",
+        "retain": "",
+        "respTopic": "",
+        "contentType": "",
+        "userProps": "",
+        "correl": "",
+        "expiry": "",
+        "broker": "8ca0c3b43f78e2e0",
+        "x": 620,
+        "y": 580,
+        "wires": []
+    },
+    {
+        "id": "1c1a736fcea42f6a",
+        "type": "ui_button",
+        "z": "68b44061.6de018",
+        "name": "",
+        "group": "71a5bcd9d543766c",
+        "order": 2,
+        "width": 0,
+        "height": 0,
+        "passthru": false,
+        "label": "Deactivate alarm",
+        "tooltip": "",
+        "color": "",
+        "bgcolor": "",
+        "className": "",
+        "icon": "",
+        "payload": "",
+        "payloadType": "str",
+        "topic": "topic",
+        "topicType": "msg",
+        "x": 290,
+        "y": 820,
+        "wires": [
+            [
+                "8548f48d7fdca5d3"
+            ]
+        ]
+    },
+    {
+        "id": "8548f48d7fdca5d3",
+        "type": "mqtt out",
+        "z": "68b44061.6de018",
+        "name": "",
+        "topic": "TheBox/Allarme/StopBuzzer",
+        "qos": "0",
+        "retain": "",
+        "respTopic": "",
+        "contentType": "",
+        "userProps": "",
+        "correl": "",
+        "expiry": "",
+        "broker": "8ca0c3b43f78e2e0",
+        "x": 700,
+        "y": 740,
+        "wires": []
+    },
+    {
+        "id": "16cf8bf0a6c7ac89",
+        "type": "debug",
+        "z": "68b44061.6de018",
+        "name": "debug 1",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 560,
+        "y": 860,
+        "wires": []
+    },
+    {
+        "id": "aec47d2162397473",
+        "type": "mqtt in",
+        "z": "68b44061.6de018",
+        "name": "",
+        "topic": "TheBox/Allarme/StopBuzzer",
+        "qos": "2",
+        "datatype": "auto-detect",
+        "broker": "8ca0c3b43f78e2e0",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 300,
+        "y": 940,
+        "wires": [
+            [
+                "16cf8bf0a6c7ac89"
+            ]
+        ]
+    },
+    {
+        "id": "0b6948a94b3b8f21",
+        "type": "debug",
+        "z": "68b44061.6de018",
+        "name": "debug 2",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 740,
+        "y": 480,
+        "wires": []
+    },
+    {
+        "id": "b172df0f382890b0",
+        "type": "ui_gauge",
+        "z": "20089d4e939595c6",
+        "name": "",
+        "group": "2cebf75e2e195924",
+        "order": 1,
+        "width": "5",
+        "height": "5",
+        "gtype": "gage",
+        "title": "Temperatura",
+        "label": "Celsius",
+        "format": "{{value}}",
+        "min": 0,
+        "max": "50",
+        "colors": [
+            "#0044b3",
+            "#ffffff",
+            "#ca3838"
+        ],
+        "seg1": "",
+        "seg2": "",
+        "diff": false,
+        "className": "",
+        "x": 590,
+        "y": 180,
+        "wires": []
+    },
+    {
+        "id": "0417efa5ac651563",
+        "type": "ui_gauge",
+        "z": "20089d4e939595c6",
+        "name": "",
+        "group": "2cebf75e2e195924",
+        "order": 2,
+        "width": "5",
+        "height": "5",
+        "gtype": "gage",
+        "title": "Umidità",
+        "label": "%",
+        "format": "{{value}}",
+        "min": 0,
+        "max": "100",
+        "colors": [
+            "#00b500",
+            "#e6e600",
+            "#ca3838"
+        ],
+        "seg1": "",
+        "seg2": "",
+        "diff": false,
+        "className": "",
+        "x": 580,
+        "y": 280,
+        "wires": []
+    },
+    {
+        "id": "51faaf87c05e5b04",
+        "type": "mqtt in",
+        "z": "20089d4e939595c6",
+        "name": "",
+        "topic": "TheBox/CaveauxStatus/Temp",
+        "qos": "0",
+        "datatype": "auto-detect",
+        "broker": "8ca0c3b43f78e2e0",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 140,
+        "y": 180,
+        "wires": [
+            [
+                "a2b0fdd24f1e1677"
+            ]
+        ]
+    },
+    {
+        "id": "a2b0fdd24f1e1677",
+        "type": "function",
+        "z": "20089d4e939595c6",
+        "name": "function 1",
+        "func": "\nmsg.payload = msg.payload.temp\n\n// Invia solo il numero al gauge\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 360,
+        "y": 180,
+        "wires": [
+            [
+                "b172df0f382890b0",
+                "e7ed483f840c0d11"
+            ]
+        ]
+    },
+    {
+        "id": "94451a4d7745d5e8",
+        "type": "mqtt in",
+        "z": "20089d4e939595c6",
+        "name": "",
+        "topic": "TheBox/CaveauxStatus/Hum",
+        "qos": "0",
+        "datatype": "auto-detect",
+        "broker": "8ca0c3b43f78e2e0",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 140,
+        "y": 280,
+        "wires": [
+            [
+                "d1bd0e16590ad7da"
+            ]
+        ]
+    },
+    {
+        "id": "d1bd0e16590ad7da",
+        "type": "function",
+        "z": "20089d4e939595c6",
+        "name": "function 2",
+        "func": "\nmsg.payload = msg.payload.humidity\n\n// Invia solo il numero al gauge\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 360,
+        "y": 280,
+        "wires": [
+            [
+                "0417efa5ac651563",
+                "647f1c29493e21ee"
+            ]
+        ]
+    },
+    {
+        "id": "e7ed483f840c0d11",
+        "type": "ui_chart",
+        "z": "20089d4e939595c6",
+        "name": "",
+        "group": "2cebf75e2e195924",
+        "order": 3,
+        "width": "6",
+        "height": "6",
+        "label": "Andamento Temperatura",
+        "chartType": "line",
+        "legend": "true",
+        "xformat": "HH:mm:ss",
+        "interpolate": "linear",
+        "nodata": "",
+        "dot": true,
+        "ymin": "20",
+        "ymax": "28",
+        "removeOlder": "1000",
+        "removeOlderPoints": "",
+        "removeOlderUnit": "1",
+        "cutout": 0,
+        "useOneColor": false,
+        "useUTC": false,
+        "colors": [
+            "#1f77b4",
+            "#aec7e8",
+            "#ff7f0e",
+            "#2ca02c",
+            "#98df8a",
+            "#d62728",
+            "#ff9896",
+            "#9467bd",
+            "#c5b0d5"
+        ],
+        "outputs": 1,
+        "useDifferentColor": false,
+        "className": "",
+        "x": 610,
+        "y": 360,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "647f1c29493e21ee",
+        "type": "ui_chart",
+        "z": "20089d4e939595c6",
+        "name": "",
+        "group": "2cebf75e2e195924",
+        "order": 4,
+        "width": "6",
+        "height": "6",
+        "label": "Andamento Umidita",
+        "chartType": "line",
+        "legend": "true",
+        "xformat": "HH:mm:ss",
+        "interpolate": "linear",
+        "nodata": "",
+        "dot": true,
+        "ymin": "20",
+        "ymax": "100",
+        "removeOlder": "1000",
+        "removeOlderPoints": "",
+        "removeOlderUnit": "1",
+        "cutout": 0,
+        "useOneColor": false,
+        "useUTC": false,
+        "colors": [
+            "#1f77b4",
+            "#aec7e8",
+            "#ff7f0e",
+            "#2ca02c",
+            "#98df8a",
+            "#d62728",
+            "#ff9896",
+            "#9467bd",
+            "#c5b0d5"
+        ],
+        "outputs": 1,
+        "useDifferentColor": false,
+        "className": "",
+        "x": 610,
+        "y": 480,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "16f596c35a78dd74",
+        "type": "mqtt in",
+        "z": "57f672d6f718c74e",
+        "name": "",
+        "topic": "TheBox/Allarme/TempElevata",
+        "qos": "1",
+        "datatype": "auto-detect",
+        "broker": "8ca0c3b43f78e2e0",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 140,
+        "y": 240,
+        "wires": [
+            [
+                "969e2fb8cbc20f42"
+            ]
+        ]
+    },
+    {
+        "id": "2ee00efeb925a0cc",
+        "type": "ui_toast",
+        "z": "57f672d6f718c74e",
+        "position": "top right",
+        "displayTime": "5",
+        "highlight": "",
+        "sendall": true,
+        "outputs": 0,
+        "ok": "OK",
+        "cancel": "",
+        "raw": false,
+        "className": "warn",
+        "topic": "🔔 Notifica",
+        "name": "TemperaturaElevata",
+        "x": 460,
+        "y": 200,
+        "wires": []
+    },
+    {
+        "id": "7ec926564b2bcb93",
+        "type": "function",
+        "z": "57f672d6f718c74e",
+        "name": "function_temp_template",
+        "func": "let now = new Date().toLocaleString();  \n\nlet notifica = `🔔 ${now} -<br> ${msg.payload}`;\n\n// Recupera lo storico e aggiungi la nuova notifica\nlet storico = flow.get(\"storico\") || [];\nstorico.unshift(notifica); // aggiungi all'inizio\nif (storico.length > 7) storico = storico.slice(0, 50); // limite a 7\nflow.set(\"storico\", storico);\n\n// Prepara il payload per il template\nmsg.storico = storico.join(\"<br><br>\");\nreturn msg;\n\nreturn null;\n",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 990,
+        "y": 480,
+        "wires": [
+            [
+                "d3607c218b5ff6dc"
+            ]
+        ]
+    },
+    {
+        "id": "d3607c218b5ff6dc",
+        "type": "ui_template",
+        "z": "57f672d6f718c74e",
+        "group": "b431dbfe4ca272fc",
+        "name": "Storico Notifiche",
+        "order": 2,
+        "width": "6",
+        "height": "13",
+        "format": "<div style=\"max-height: 700px; overflow-y: auto;\">\n    <div ng-bind-html=\"msg.storico\"></div>\n</div>",
+        "storeOutMessages": true,
+        "fwdInMessages": true,
+        "resendOnRefresh": true,
+        "templateScope": "local",
+        "className": "",
+        "x": 1280,
+        "y": 480,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "969e2fb8cbc20f42",
+        "type": "function",
+        "z": "57f672d6f718c74e",
+        "name": "function_temp",
+        "func": "let key = Object.keys(msg.payload)[0]; // prende la prima chiave\nlet x = msg.payload[key]\nmsg.payload = `🚨 Valore di temperatura troppo elevata: ${x}°C`;\nmsg.topic = \"🔔 Notifica\";\nmsg.className = \"war\";\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 440,
+        "y": 240,
+        "wires": [
+            [
+                "2ee00efeb925a0cc",
+                "7ec926564b2bcb93"
+            ]
+        ]
+    },
+    {
+        "id": "061fadd184fafa75",
+        "type": "mqtt in",
+        "z": "57f672d6f718c74e",
+        "name": "",
+        "topic": "TheBox/OpenCaveaux",
+        "qos": "0",
+        "datatype": "auto-detect",
+        "broker": "8ca0c3b43f78e2e0",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 160,
+        "y": 420,
+        "wires": [
+            [
+                "6b7cef52be58d4b7"
+            ]
+        ]
+    },
+    {
+        "id": "6a0be3fdd16f017f",
+        "type": "ui_toast",
+        "z": "57f672d6f718c74e",
+        "position": "top right",
+        "displayTime": "5",
+        "highlight": "",
+        "sendall": true,
+        "outputs": 0,
+        "ok": "OK",
+        "cancel": "",
+        "raw": false,
+        "className": "warn",
+        "topic": "",
+        "name": "La porta è stata aperta",
+        "x": 460,
+        "y": 380,
+        "wires": []
+    },
+    {
+        "id": "6b7cef52be58d4b7",
+        "type": "function",
+        "z": "57f672d6f718c74e",
+        "name": "function_OpenCaveaux",
+        "func": "let key = Object.keys(msg.payload)[0]; // prende la prima chiave\nmsg.payload = msg.payload[key];\nif (msg.payload===3) {\n    msg.payload = \"🔓 Porta aperta!\";\n    msg.topic = \"🔔 Notifica\";\n    msg.className = \"success\";  // oppure \"warn\", \"error\", etc.\n    return msg;\n} else if (msg.payload=== 2) {\n    msg.payload = \"🔒 Porta chiusa!\";\n    msg.topic = \"🔔 Notifica\";\n    msg.className = \"failure\";  // oppure \"warn\", \"error\", etc.\n    return msg;\n}",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 430,
+        "y": 420,
+        "wires": [
+            [
+                "6a0be3fdd16f017f",
+                "7ec926564b2bcb93"
+            ]
+        ]
+    },
+    {
+        "id": "a9d0660799fad46b",
+        "type": "ui_led",
+        "z": "57f672d6f718c74e",
+        "order": 1,
+        "group": "71a5bcd9d543766c",
+        "width": "1",
+        "height": "1",
+        "label": "",
+        "labelPlacement": "left",
+        "labelAlignment": "left",
+        "colorForValue": [
+            {
+                "color": "#ff0000",
+                "value": "2",
+                "valueType": "num"
+            },
+            {
+                "color": "#008000",
+                "value": "3",
+                "valueType": "num"
+            }
+        ],
+        "allowColorForValueInMessage": false,
+        "shape": "circle",
+        "showGlow": true,
+        "name": "",
+        "x": 430,
+        "y": 700,
+        "wires": []
+    },
+    {
+        "id": "825b53f20614fcdc",
+        "type": "mqtt in",
+        "z": "57f672d6f718c74e",
+        "name": "",
+        "topic": "TheBox/Allarme/Furto",
+        "qos": "1",
+        "datatype": "auto-detect",
+        "broker": "8ca0c3b43f78e2e0",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 160,
+        "y": 500,
+        "wires": [
+            [
+                "eb6167d2b641945c"
+            ]
+        ]
+    },
+    {
+        "id": "f040861a01686454",
+        "type": "mqtt in",
+        "z": "57f672d6f718c74e",
+        "name": "",
+        "topic": "TheBox/Allarme/Risolto",
+        "qos": "1",
+        "datatype": "auto-detect",
+        "broker": "8ca0c3b43f78e2e0",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 140,
+        "y": 580,
+        "wires": [
+            [
+                "18c0658a54393e1b"
+            ]
+        ]
+    },
+    {
+        "id": "59ffeec38b319b99",
+        "type": "mqtt in",
+        "z": "57f672d6f718c74e",
+        "name": "",
+        "topic": "TheBox/Allarme/PinErrato",
+        "qos": "2",
+        "datatype": "auto-detect",
+        "broker": "8ca0c3b43f78e2e0",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 150,
+        "y": 660,
+        "wires": [
+            [
+                "f9bb07d8cb477c11"
+            ]
+        ]
+    },
+    {
+        "id": "eb6167d2b641945c",
+        "type": "function",
+        "z": "57f672d6f718c74e",
+        "name": "function_furto",
+        "func": "let key = Object.keys(msg.payload)[0]; // prende la prima chiave\nmsg.payload = msg.payload[key];\nif (msg.payload ===1){\n    msg.payload = \"🚨 Tentativo di furto!\";\n    msg.topic = \"🔔 Notifica\";\n    msg.className = \"war\";\n}\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 460,
+        "y": 500,
+        "wires": [
+            [
+                "578bfed616b446ab",
+                "7ec926564b2bcb93"
+            ]
+        ]
+    },
+    {
+        "id": "18c0658a54393e1b",
+        "type": "function",
+        "z": "57f672d6f718c74e",
+        "name": "function_risolto",
+        "func": "let key = Object.keys(msg.payload)[0]; // prende la prima chiave\nmsg.payload = msg.payload[key];\nif (msg.payload ===1){\n    msg.payload = \"✅  Allarme risolto!\";\n    msg.topic = \"🔔 Notifica\";\n    msg.className = \"success\";\n}\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 460,
+        "y": 580,
+        "wires": [
+            [
+                "8fd549f00367c01b",
+                "7ec926564b2bcb93"
+            ]
+        ]
+    },
+    {
+        "id": "f9bb07d8cb477c11",
+        "type": "function",
+        "z": "57f672d6f718c74e",
+        "name": "function_PinErrato",
+        "func": "let key = Object.keys(msg.payload)[0]; // prende la prima chiave\nmsg.payload = msg.payload[key];\nif (msg.payload ===1){\n    msg.payload = \"🚨  Tentato accesso illegale!\";\n    msg.topic = \"🔔 Notifica\";\n    msg.className = \"war\";\n}\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 490,
+        "y": 660,
+        "wires": [
+            [
+                "bab126e902bf9d50",
+                "7ec926564b2bcb93"
+            ]
+        ]
+    },
+    {
+        "id": "578bfed616b446ab",
+        "type": "ui_toast",
+        "z": "57f672d6f718c74e",
+        "position": "top right",
+        "displayTime": "5",
+        "highlight": "",
+        "sendall": true,
+        "outputs": 0,
+        "ok": "OK",
+        "cancel": "",
+        "raw": false,
+        "className": "",
+        "topic": "",
+        "name": "Furto",
+        "x": 490,
+        "y": 460,
+        "wires": []
+    },
+    {
+        "id": "bab126e902bf9d50",
+        "type": "ui_toast",
+        "z": "57f672d6f718c74e",
+        "position": "top right",
+        "displayTime": "5",
+        "highlight": "",
+        "sendall": true,
+        "outputs": 0,
+        "ok": "OK",
+        "cancel": "",
+        "raw": false,
+        "className": "",
+        "topic": "",
+        "name": "PinErrato",
+        "x": 500,
+        "y": 620,
+        "wires": []
+    },
+    {
+        "id": "8fd549f00367c01b",
+        "type": "ui_toast",
+        "z": "57f672d6f718c74e",
+        "position": "top right",
+        "displayTime": "5",
+        "highlight": "",
+        "sendall": true,
+        "outputs": 0,
+        "ok": "OK",
+        "cancel": "",
+        "raw": false,
+        "className": "",
+        "topic": "",
+        "name": "Risolto",
+        "x": 490,
+        "y": 540,
+        "wires": []
+    },
+    {
+        "id": "8b9204b68ec6ab83",
+        "type": "mqtt in",
+        "z": "57f672d6f718c74e",
+        "name": "",
+        "topic": "TheBox/Allarme/HumAnomala",
+        "qos": "1",
+        "datatype": "auto-detect",
+        "broker": "8ca0c3b43f78e2e0",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 140,
+        "y": 160,
+        "wires": [
+            [
+                "1684546b8b0df4d6"
+            ]
+        ]
+    },
+    {
+        "id": "1684546b8b0df4d6",
+        "type": "function",
+        "z": "57f672d6f718c74e",
+        "name": "function_hum",
+        "func": "let key = Object.keys(msg.payload)[0]; // prende la prima chiave\nlet x = msg.payload[key]\nmsg.payload = `🚨 Valore di umidità anomalo: ${x}%`;\nmsg.topic = \"🔔 Notifica\";\nmsg.className = \"war\";\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 460,
+        "y": 160,
+        "wires": [
+            [
+                "3ee59ff8206d137e",
+                "7ec926564b2bcb93"
+            ]
+        ]
+    },
+    {
+        "id": "3ee59ff8206d137e",
+        "type": "ui_toast",
+        "z": "57f672d6f718c74e",
+        "position": "top right",
+        "displayTime": "5",
+        "highlight": "",
+        "sendall": true,
+        "outputs": 0,
+        "ok": "OK",
+        "cancel": "",
+        "raw": false,
+        "className": "🔔 Notifica",
+        "topic": "",
+        "name": "ValoreUmiditàAnomalo",
+        "x": 480,
+        "y": 120,
+        "wires": []
+    },
+    {
+        "id": "d020fa5025036e04",
+        "type": "mqtt in",
+        "z": "57f672d6f718c74e",
+        "name": "",
+        "topic": "TheBox/Status/Pong",
+        "qos": "0",
+        "datatype": "auto-detect",
+        "broker": "8ca0c3b43f78e2e0",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 690,
+        "y": 1100,
+        "wires": [
+            [
+                "69b92c1bf1b9b806"
+            ]
+        ]
+    },
+    {
+        "id": "99d2d27d95a42e13",
+        "type": "ui_led",
+        "z": "57f672d6f718c74e",
+        "order": 6,
+        "group": "2cebf75e2e195924",
+        "width": "1",
+        "height": "1",
+        "label": "",
+        "labelPlacement": "left",
+        "labelAlignment": "center",
+        "colorForValue": [
+            {
+                "color": "#ff0000",
+                "value": "0",
+                "valueType": "num"
+            },
+            {
+                "color": "#008000",
+                "value": "1",
+                "valueType": "num"
+            }
+        ],
+        "allowColorForValueInMessage": false,
+        "shape": "circle",
+        "showGlow": true,
+        "name": "",
+        "x": 890,
+        "y": 1100,
+        "wires": []
+    },
+    {
+        "id": "4097838789c2a5af",
+        "type": "function",
+        "z": "57f672d6f718c74e",
+        "name": "function_Led",
+        "func": "let key = Object.keys(msg.payload)[0]; // prende la prima chiave\nmsg.payload = msg.payload[key];\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 430,
+        "y": 740,
+        "wires": [
+            [
+                "a9d0660799fad46b"
+            ]
+        ]
+    },
+    {
+        "id": "89f4a1341f11eda4",
+        "type": "mqtt in",
+        "z": "57f672d6f718c74e",
+        "name": "",
+        "topic": "TheBox/OpenCaveaux",
+        "qos": "2",
+        "datatype": "auto-detect",
+        "broker": "8ca0c3b43f78e2e0",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 140,
+        "y": 740,
+        "wires": [
+            [
+                "4097838789c2a5af"
+            ]
+        ]
+    },
+    {
+        "id": "46d734262c0092e1",
+        "type": "function",
+        "z": "57f672d6f718c74e",
+        "name": "function_Ping_Disconnesso",
+        "func": "if (msg.payload === 0 ){\n    msg.payload = \"🚨 Caveau disconnesso!\";\n    msg.topic = \"🔔 Notifica\";\n    msg.className = \"warn\";\n    return msg;\n}\nreturn null;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1120,
+        "y": 1080,
+        "wires": [
+            [
+                "1c4bba981403bad2",
+                "7ec926564b2bcb93"
+            ]
+        ]
+    },
+    {
+        "id": "1c4bba981403bad2",
+        "type": "ui_toast",
+        "z": "57f672d6f718c74e",
+        "position": "top right",
+        "displayTime": "5",
+        "highlight": "",
+        "sendall": true,
+        "outputs": 0,
+        "ok": "OK",
+        "cancel": "",
+        "raw": false,
+        "className": "warn",
+        "topic": "",
+        "name": "Caveua Disconnesso",
+        "x": 1200,
+        "y": 1140,
+        "wires": []
+    },
+    {
+        "id": "69b92c1bf1b9b806",
+        "type": "trigger",
+        "z": "57f672d6f718c74e",
+        "name": "",
+        "op1": "1",
+        "op2": "0",
+        "op1type": "num",
+        "op2type": "num",
+        "duration": "20",
+        "extend": true,
+        "overrideDelay": false,
+        "units": "s",
+        "reset": "",
+        "bytopic": "all",
+        "topic": "topic",
+        "outputs": 1,
+        "x": 870,
+        "y": 1040,
+        "wires": [
+            [
+                "46d734262c0092e1",
+                "99d2d27d95a42e13",
+                "ba008d5ee0596f6d"
+            ]
+        ]
+    },
+    {
+        "id": "ba008d5ee0596f6d",
+        "type": "function",
+        "z": "57f672d6f718c74e",
+        "name": "function_Ping_Connesso",
+        "func": "if (msg.payload === 1 ){\n    msg.payload = \"✅ Caveau connesso!\";\n    msg.topic = \"🔔 Notifica\";\n    msg.className = \"warn\";\n    return msg;\n}\nreturn null;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1070,
+        "y": 980,
+        "wires": [
+            [
+                "48f25f3bc379e193",
+                "7ec926564b2bcb93"
+            ]
+        ]
+    },
+    {
+        "id": "48f25f3bc379e193",
+        "type": "ui_toast",
+        "z": "57f672d6f718c74e",
+        "position": "top right",
+        "displayTime": "5",
+        "highlight": "",
+        "sendall": true,
+        "outputs": 0,
+        "ok": "OK",
+        "cancel": "",
+        "raw": false,
+        "className": "warn",
+        "topic": "",
+        "name": "Caveua Connesso",
+        "x": 1090,
+        "y": 1040,
+        "wires": []
+    },
+    {
+        "id": "aaa5077cc7142cef",
+        "type": "ui_form",
+        "z": "57f672d6f718c74e",
+        "name": "",
+        "label": "Temperatura",
+        "group": "805d14b576e4b149",
+        "order": 1,
+        "width": 0,
+        "height": 0,
+        "options": [
+            {
+                "label": "Inserisci una nuova soglia per la temperatura",
+                "value": "Temperatura",
+                "type": "number",
+                "required": true,
+                "rows": null
+            }
+        ],
+        "formValue": {
+            "Temperatura": ""
+        },
+        "payload": "",
+        "submit": "submit",
+        "cancel": "cancel",
+        "topic": "topic",
+        "topicType": "msg",
+        "splitLayout": false,
+        "className": "",
+        "x": 110,
+        "y": 880,
+        "wires": [
+            [
+                "b780064b7eb44f35",
+                "1c26894b667807bb"
+            ]
+        ]
+    },
+    {
+        "id": "b780064b7eb44f35",
+        "type": "mqtt out",
+        "z": "57f672d6f718c74e",
+        "name": "",
+        "topic": "TheBox/CaveauxStatus/Temp/NuovaSoglia",
+        "qos": "",
+        "retain": "",
+        "respTopic": "",
+        "contentType": "",
+        "userProps": "",
+        "correl": "",
+        "expiry": "",
+        "broker": "8ca0c3b43f78e2e0",
+        "x": 430,
+        "y": 900,
+        "wires": []
+    },
+    {
+        "id": "b452ca0d21c7aa2c",
+        "type": "ui_form",
+        "z": "57f672d6f718c74e",
+        "name": "",
+        "label": "Umidità",
+        "group": "805d14b576e4b149",
+        "order": 1,
+        "width": 0,
+        "height": 0,
+        "options": [
+            {
+                "label": "Inserisci una nuova soglia per l'umidità",
+                "value": "Umidita",
+                "type": "number",
+                "required": true,
+                "rows": null
+            }
+        ],
+        "formValue": {
+            "Umidita": ""
+        },
+        "payload": "",
+        "submit": "submit",
+        "cancel": "cancel",
+        "topic": "topic",
+        "topicType": "msg",
+        "splitLayout": false,
+        "className": "",
+        "x": 100,
+        "y": 1000,
+        "wires": [
+            [
+                "b8fd29b46a825927",
+                "5506414081104efc"
+            ]
+        ]
+    },
+    {
+        "id": "b8fd29b46a825927",
+        "type": "mqtt out",
+        "z": "57f672d6f718c74e",
+        "name": "",
+        "topic": "TheBox/CaveauxStatus/Hum/NuovaSoglia",
+        "qos": "",
+        "retain": "",
+        "respTopic": "",
+        "contentType": "",
+        "userProps": "",
+        "correl": "",
+        "expiry": "",
+        "broker": "8ca0c3b43f78e2e0",
+        "x": 430,
+        "y": 960,
+        "wires": []
+    },
+    {
+        "id": "6b239679891406ec",
+        "type": "ui_form",
+        "z": "57f672d6f718c74e",
+        "name": "",
+        "label": "Distanza",
+        "group": "805d14b576e4b149",
+        "order": 1,
+        "width": 0,
+        "height": 0,
+        "options": [
+            {
+                "label": "Inserisci una nuova soglia per l'attivazione del sensore di prossimità",
+                "value": "Distanza",
+                "type": "number",
+                "required": true,
+                "rows": null
+            }
+        ],
+        "formValue": {
+            "Distanza": ""
+        },
+        "payload": "",
+        "submit": "submit",
+        "cancel": "cancel",
+        "topic": "topic",
+        "topicType": "msg",
+        "splitLayout": false,
+        "className": "",
+        "x": 120,
+        "y": 1160,
+        "wires": [
+            [
+                "b481182c020b8b18",
+                "f58694b350f32ea3"
+            ]
+        ]
+    },
+    {
+        "id": "b481182c020b8b18",
+        "type": "mqtt out",
+        "z": "57f672d6f718c74e",
+        "name": "",
+        "topic": "TheBox/CaveauxStatus/Dis/NuovaSoglia",
+        "qos": "",
+        "retain": "",
+        "respTopic": "",
+        "contentType": "",
+        "userProps": "",
+        "correl": "",
+        "expiry": "",
+        "broker": "8ca0c3b43f78e2e0",
+        "x": 360,
+        "y": 1080,
+        "wires": []
+    },
+    {
+        "id": "1c26894b667807bb",
+        "type": "function",
+        "z": "57f672d6f718c74e",
+        "name": "function_Newtemp",
+        "func": "let key = Object.keys(msg.payload)[0]; // prende la prima chiave\nlet x = msg.payload[key];\nmsg.payload = `✅ Nuova soglia di temperatura inserita: ${x} °C!`;\nmsg.topic = \"🔔 Notifica\";\nmsg.className = \"warn\";\nreturn msg;\n",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 350,
+        "y": 840,
+        "wires": [
+            [
+                "7ec926564b2bcb93"
+            ]
+        ]
+    },
+    {
+        "id": "5506414081104efc",
+        "type": "function",
+        "z": "57f672d6f718c74e",
+        "name": "function_Newhum",
+        "func": "let key = Object.keys(msg.payload)[0]; // prende la prima chiave\nlet x = msg.payload[key]\nmsg.payload = `✅ Nuova soglia  di umidità inserita: ${x}%!`;\nmsg.topic = \"🔔 Notifica\";\nmsg.className = \"warn\";\nreturn msg;\n",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 430,
+        "y": 1020,
+        "wires": [
+            [
+                "7ec926564b2bcb93"
+            ]
+        ]
+    },
+    {
+        "id": "f58694b350f32ea3",
+        "type": "function",
+        "z": "57f672d6f718c74e",
+        "name": "function_Newdis",
+        "func": "let key = Object.keys(msg.payload)[0]; // prende la prima chiave\nlet x = msg.payload[key]\nmsg.payload = `✅ Nuova soglia per il sensore di prossimità inserita: ${x}cm!`;\nmsg.topic = \"🔔 Notifica\";\nmsg.className = \"warn\";\nreturn msg;\n",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 440,
+        "y": 1140,
+        "wires": [
+            [
+                "7ec926564b2bcb93"
+            ]
+        ]
+    },
+    {
+        "id": "4ff1e7b2c8737bdf",
+        "type": "ui_text",
+        "z": "57f672d6f718c74e",
+        "group": "2cebf75e2e195924",
+        "order": 5,
+        "width": "2",
+        "height": "1",
+        "name": "",
+        "label": "Caveau connesso",
+        "format": "{{msg.payload}}",
+        "layout": "row-spread",
+        "className": "",
+        "style": false,
+        "font": "",
+        "fontSize": 16,
+        "color": "#000000",
+        "x": 170,
+        "y": 1280,
+        "wires": []
+    }
+]
